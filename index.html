@@ -3,34 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MPL - Mamoball</title>
+    <title>MPL - Mamoball Profesyonel Ligi</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top, #1a0a0a 0%, #000 100%); }
+        .title-font { font-family: 'Orbitron', sans-serif; }
+        .neon-glow { box-shadow: 0 0 30px rgba(220, 38, 38, 0.4); border: 1px solid rgba(220, 38, 38, 0.5); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    </style>
 </head>
-<body class="bg-black text-white font-sans text-[13px]">
-    <header class="p-10 text-center bg-black border-b-2 border-red-600 shadow-[0_10px_30px_rgba(220,38,38,0.2)]">
-        <h1 class="text-5xl font-black italic tracking-tighter uppercase text-white">MPL<span class="text-red-600">.</span></h1>
-        <div class="h-1 w-20 bg-red-600 mx-auto my-3"></div>
-        <p class="text-sm opacity-90 tracking-[0.4em] uppercase font-black text-gray-400">FUTBOLUN KALBİ BURADA ATIYOR</p>
-    </header>
+<body class="text-white min-h-screen flex items-center justify-center p-6">
+    <main class="max-w-4xl w-full text-center space-y-12">
+        <header class="relative inline-block">
+            <img src="https://i.ibb.co/LkvZ8sFh/mamoball-logo.webp" class="w-40 h-40 mx-auto rounded-full neon-glow mb-8 animate-bounce">
+            <h1 class="text-7xl md:text-8xl title-font font-black italic tracking-tighter uppercase leading-none">MPL<span class="text-red-600">.</span></h1>
+            <p class="text-[10px] tracking-[0.8em] text-zinc-500 font-black uppercase mt-4">MAMOBALL PROFESYONEL LİGİ</p>
+        </header>
 
-    <main class="max-w-4xl mx-auto p-10 text-center space-y-10">
-        <div class="flex flex-col md:flex-row gap-4 justify-center">
-            <a href="puantablosu.html" class="bg-red-600 hover:bg-red-700 text-white font-black py-6 px-10 rounded-2xl italic tracking-tighter shadow-lg transition-all transform hover:scale-105 uppercase">
-                CANLI PUAN TABLOSU →
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <a href="puantablosu.html" class="glass p-10 rounded-[3rem] hover:neon-glow hover:-translate-y-2 transition-all duration-500 group">
+                <h2 class="text-2xl title-font font-black italic mb-2 group-hover:text-red-600">TABLO</h2>
+                <p class="text-xs text-zinc-500 font-bold tracking-widest uppercase">SIRALAMA VE PUANLAR →</p>
             </a>
-            <a href="mplhaber.html" class="bg-zinc-800 hover:bg-zinc-700 text-white font-black py-6 px-10 rounded-2xl italic transition-all transform hover:scale-105 uppercase">
-                LİG HABERLERİ →
+            <a href="mplhaber.html" class="glass p-10 rounded-[3rem] hover:neon-glow hover:-translate-y-2 transition-all duration-500 group">
+                <h2 class="text-2xl title-font font-black italic mb-2 group-hover:text-red-600">HABERLER</h2>
+                <p class="text-xs text-zinc-500 font-bold tracking-widest uppercase">SON DAKİKA GELİŞMELERİ →</p>
             </a>
         </div>
 
-        <div class="bg-zinc-950 p-8 rounded-[2rem] border border-zinc-900 text-left shadow-2xl">
-            <h3 class="text-red-600 font-black uppercase mb-3 italic">KURUCU NOTU:</h3>
-            <p class="text-zinc-400 text-sm italic font-medium">MPL Sezonu 3LosTSouL4 yönetiminde resmen başlıyor. Tüm oyunculara başarılar. Sahada görüşürüz!</p>
-        </div>
+        <footer class="text-[10px] font-black text-zinc-800 tracking-[0.5em] pt-10">
+            OWNED BY 3LosTSouL4 // 2026
+        </footer>
     </main>
-
-    <footer class="p-10 text-center text-zinc-800 text-[10px] uppercase tracking-[0.5em] font-black">
-        MPL OFFICIAL // 2026
-    </footer>
 </body>
 </html>
