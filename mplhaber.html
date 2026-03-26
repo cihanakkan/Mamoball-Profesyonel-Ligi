@@ -12,36 +12,41 @@
     </style>
 </head>
 <body class="min-h-screen">
-    <button onclick="adminLogin()" class="fixed top-4 right-4 z-50 p-2 glass rounded-full opacity-20">⚙️</button>
     <header class="py-12 text-center glass border-b border-red-900/20">
-        <img src="./1000090222.webp" onerror="this.src='https://api.dicebear.com/7.x/initials/svg?seed=MPL&backgroundColor=dc2626&bold=true'" class="w-24 h-24 mx-auto rounded-full mb-6 shadow-2xl">
-        <h1 class="text-4xl title-font font-black italic uppercase tracking-tighter text-red-600">MPL NEWS</h1>
-        <a href="index.html" class="text-[10px] tracking-widest text-zinc-500 hover:text-white transition mt-4 inline-block uppercase font-bold">← ANA SAYFA</a>
+        <img src="https://raw.githubusercontent.com/cihanakk/Mamoball-Profesyonel-Ligi/main/1000090222.webp" class="w-24 h-24 mx-auto rounded-full mb-6 shadow-2xl">
+        <h1 class="text-4xl title-font font-black italic uppercase text-red-600">MPL NEWS</h1>
+        <a href="index.html" class="text-[10px] tracking-widest text-zinc-500 hover:text-white transition mt-4 inline-block font-bold uppercase">← GERİ</a>
     </header>
     <main class="max-w-4xl mx-auto px-6 py-12">
         <section id="news-admin" class="hidden glass p-6 rounded-[2rem] border border-red-600 mb-10 space-y-4">
-            <input type="text" id="news-title" placeholder="BAŞLIK" class="w-full bg-black/50 p-4 rounded-xl border border-zinc-800 outline-none uppercase font-bold text-xs">
-            <textarea id="news-content" placeholder="HABER DETAYI" class="w-full bg-black/50 p-4 rounded-xl h-24 border border-zinc-800 outline-none text-xs"></textarea>
-            <button onclick="haberEkle()" class="w-full bg-red-600 p-4 rounded-xl font-black uppercase text-xs">YAYINLA</button>
+            <h2 class="text-center font-black text-red-600 uppercase italic">HABER YAYINLA</h2>
+            <input type="text" id="news-title" placeholder="HABER BAŞLIĞI" class="w-full bg-black/50 p-4 rounded-xl border border-zinc-800 outline-none uppercase font-bold text-xs text-white">
+            <textarea id="news-content" placeholder="HABER İÇERİĞİ" class="w-full bg-black/50 p-4 rounded-xl h-24 border border-zinc-800 outline-none text-xs text-white"></textarea>
+            <button onclick="haberEkle()" class="w-full bg-red-600 p-4 rounded-xl font-black uppercase text-xs shadow-lg">YAYINLA</button>
         </section>
         <div id="news-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
     </main>
-    <div id="news-modal" class="fixed inset-0 bg-black/95 z-[100] hidden overflow-y-auto p-4 flex items-center justify-center">
-        <div class="max-w-2xl w-full glass rounded-[3rem] p-10 relative border border-white/5">
+    <div id="news-modal" class="fixed inset-0 bg-black/95 z-[100] hidden flex items-center justify-center p-4">
+        <div class="max-w-2xl w-full glass rounded-[3rem] p-10 relative border border-white/5 text-center">
             <button onclick="modalKapat()" class="absolute top-6 right-6 text-zinc-500 text-3xl font-black">&times;</button>
-            <div id="modal-content" class="text-center"></div>
+            <div id="modal-content"></div>
         </div>
     </div>
     <script>
         let haberler = JSON.parse(localStorage.getItem('mpl_haberler')) || [];
         function haberleriGoster() {
-            const c = document.getElementById('news-container'); c.innerHTML = '';
+            const container = document.getElementById('news-container'); container.innerHTML = '';
             [...haberler].reverse().forEach((h, i) => { const ri = haberler.length-1-i;
-            c.innerHTML += `<article onclick="haberAc(${ri})" class="glass p-8 rounded-[2rem] cursor-pointer hover:border-red-600 transition uppercase italic font-bold text-center"><h3 class="text-xl mb-2">${h.baslik}</h3><p class="text-[9px] text-zinc-500 tracking-widest">DEVAMINI OKU →</p></article>`; });
+            container.innerHTML += `<article onclick="haberAc(${ri})" class="glass p-8 rounded-[2rem] cursor-pointer hover:border-red-600 transition uppercase italic font-bold text-center"><h3 class="text-xl mb-2">${h.baslik}</h3><p class="text-[9px] text-zinc-500 tracking-widest uppercase">HABER DETAYI →</p></article>`; });
+            checkAdmin();
+        }
+        function checkAdmin() {
+            const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
+            if(user && (user.rank === "KURUCU" || user.rank === "ADMİN")) { document.getElementById('news-admin').classList.remove('hidden'); }
         }
         function haberAc(i) {
             const h = haberler[i];
-            document.getElementById('modal-content').innerHTML = `<h2 class="text-3xl title-font font-black italic uppercase text-red-600 mb-6">${h.baslik}</h2><p class="text-zinc-300 text-lg leading-relaxed">${h.icerik}</p>`;
+            document.getElementById('modal-content').innerHTML = `<h2 class="text-3xl title-font font-black italic uppercase text-red-600 mb-6">${h.baslik}</h2><p class="text-zinc-300 text-lg">${h.icerik}</p>`;
             document.getElementById('news-modal').classList.remove('hidden');
         }
         function modalKapat() { document.getElementById('news-modal').classList.add('hidden'); }
@@ -49,7 +54,6 @@
             const t = document.getElementById('news-title').value; const c = document.getElementById('news-content').value;
             if(t && c) { haberler.push({baslik:t, icerik:c}); localStorage.setItem('mpl_haberler', JSON.stringify(haberler)); location.reload(); }
         }
-        function adminLogin() { if (prompt("ŞİFRE:") === "c2014add") document.getElementById('news-admin').classList.toggle('hidden'); }
         window.onload = haberleriGoster;
     </script>
 </body>
