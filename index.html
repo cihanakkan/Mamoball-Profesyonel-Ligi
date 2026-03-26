@@ -2,7 +2,49 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPL - Ana Sayfa</title><!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MPL - Ana Sayfa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top, #1a0a0a 0%, #000 100%); color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 0; }
+        .title-font { font-family: 'Orbitron', sans-serif; }
+        .neon-glow { box-shadow: 0 0 50px rgba(220, 38, 38, 0.4); border: 2px solid rgba(220, 38, 38, 0.6); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body class="p-6 text-center">
+    <main class="max-w-4xl w-full space-y-12">
+        <header>
+            <div class="relative inline-block group">
+                <div class="absolute -inset-4 bg-red-600 rounded-full blur-2xl opacity-20 group-hover:opacity-50 transition duration-1000"></div>
+                <img src="1000090222.webp" alt="MPL LOGO" class="relative w-56 h-56 mx-auto rounded-full neon-glow mb-8 animate-pulse shadow-[0_0_60px_rgba(220,38,38,0.5)]">
+            </div>
+            <h1 class="text-8xl title-font font-black italic tracking-tighter uppercase leading-none">MPL<span class="text-red-600">.</span></h1>
+            <p class="text-[10px] tracking-[0.8em] text-zinc-500 font-black uppercase mt-6">MAMOBALL PROFESYONEL LİGİ</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
+            <a href="puantablosu.html" class="glass p-12 rounded-[3.5rem] hover:shadow-[0_0_40px_rgba(220,38,38,0.3)] hover:-translate-y-2 transition-all duration-500 group border border-red-900/20">
+                <h2 class="text-3xl title-font font-black italic mb-2 group-hover:text-red-600 uppercase tracking-tighter">TABLO</h2>
+                <p class="text-[9px] text-zinc-600 font-bold tracking-[0.3em] uppercase">SIRALAMA →</p>
+            </a>
+            <a href="mplhaber.html" class="glass p-12 rounded-[3.5rem] hover:shadow-[0_0_40px_rgba(220,38,38,0.3)] hover:-translate-y-2 transition-all duration-500 group border border-red-900/20">
+                <h2 class="text-3xl title-font font-black italic mb-2 group-hover:text-red-600 uppercase tracking-tighter">HABERLER</h2>
+                <p class="text-[9px] text-zinc-600 font-bold tracking-[0.3em] uppercase">SON DAKİKA →</p>
+            </a>
+        </div>
+
+        <footer class="pt-12 opacity-10 text-[8px] tracking-[1em] font-black uppercase">
+            EST 2024 // MPL OFFICIAL
+        </footer>
+    </main>
+</body>
+</html>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;900&display=swap');
