@@ -6,27 +6,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top, #1a0a0a 0%, #000 100%); color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow-x: hidden; margin: 0; }
+        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top, #1a0a0a 0%, #000 100%); color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; overflow: hidden; }
         .title-font { font-family: 'Orbitron', sans-serif; }
-        .neon-glow { box-shadow: 0 0 40px rgba(220, 38, 38, 0.5); border: 2px solid rgba(220, 38, 38, 0.7); }
+        .neon-glow { box-shadow: 0 0 50px rgba(220, 38, 38, 0.4); border: 2px solid rgba(220, 38, 38, 0.6); }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
     </style>
 </head>
-<body class="p-4 text-center">
-    <main class="max-w-2xl w-full space-y-10">
+<body class="p-6 text-center">
+    <main class="max-w-md w-full space-y-12">
         <header>
             <div class="relative inline-block group">
-                <img src="https://i.ibb.co/LkvZ8sFh/mamoball-logo.webp" alt="MPL" class="relative w-48 h-48 mx-auto rounded-full neon-glow mb-6 animate-pulse">
+                <div class="absolute -inset-4 bg-red-600 rounded-full blur-2xl opacity-20 transition duration-1000"></div>
+                <img src="1000090222.webp" onerror="this.src='https://raw.githubusercontent.com/cihanakk/Mamoball-Profesyonel-Ligi/main/1000090222.webp'" class="relative w-48 h-48 mx-auto rounded-full neon-glow mb-8 animate-pulse shadow-2xl">
             </div>
-            <h1 class="text-7xl md:text-8xl title-font font-black italic tracking-tighter uppercase leading-none">MPL<span class="text-red-600">.</span></h1>
-            <p class="text-[10px] tracking-[0.6em] text-zinc-500 font-black uppercase mt-4">MAMOBALL PROFESYONEL LİGİ</p>
+            <h1 class="text-7xl title-font font-black italic tracking-tighter uppercase leading-none">MPL<span class="text-red-600">.</span></h1>
+            <p class="text-[9px] tracking-[0.6em] text-zinc-500 font-black uppercase mt-4">MAMOBALL PROFESYONEL LİGİ</p>
         </header>
 
-        <div class="grid grid-cols-1 gap-4 px-6">
-            <a href="puantablosu.html" class="glass py-8 rounded-[2.5rem] hover:bg-red-600/10 transition-all duration-300 group">
+        <div class="grid grid-cols-1 gap-6 px-4">
+            <a href="puantablosu.html" class="glass py-10 rounded-[3rem] hover:bg-red-600/10 transition-all duration-500 group border border-white/5">
                 <h2 class="text-2xl title-font font-black italic group-hover:text-red-600 uppercase">TABLO</h2>
             </a>
-            <a href="mplhaber.html" class="glass py-8 rounded-[2.5rem] hover:bg-red-600/10 transition-all duration-300 group">
+            <a href="mplhaber.html" class="glass py-10 rounded-[3rem] hover:bg-red-600/10 transition-all duration-500 group border border-white/5">
                 <h2 class="text-2xl title-font font-black italic group-hover:text-red-600 uppercase">HABERLER</h2>
             </a>
         </div>
