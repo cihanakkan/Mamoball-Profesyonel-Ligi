@@ -3,59 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MPL - Haberler</title>
+    <title>MPL - Haberler & Yorumlar</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top, #1a0a0a 0%, #000 100%); }
+        .neon-border { box-shadow: 0 0 15px rgba(220, 38, 38, 0.4); border: 1px solid rgba(220, 38, 38, 0.5); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .title-font { font-family: 'Orbitron', sans-serif; }
+        .glow-text { text-shadow: 0 0 10px rgba(220, 38, 38, 0.8); }
+    </style>
 </head>
-<body class="bg-black text-white font-sans text-[14px]">
-    <button onclick="adminLogin()" class="fixed top-2 right-2 opacity-10 hover:opacity-100 text-[10px] bg-zinc-800 p-1 rounded transition">YÖNETİM</button>
+<body class="text-white min-h-screen">
+    <button onclick="adminLogin()" class="fixed top-4 right-4 z-50 p-2 glass rounded-full hover:bg-red-600 transition-all duration-500 group">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-500 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
+    </button>
 
-    <header class="p-8 text-center border-b border-red-600 bg-zinc-950 shadow-2xl">
-        <div class="flex justify-between max-w-4xl mx-auto items-center uppercase font-black text-[10px]">
-            <a href="index.html" class="text-zinc-500 hover:text-white transition">← GERİ</a>
-            <h1 class="text-3xl italic text-red-600 tracking-tighter">MPL HABER</h1>
-            <a href="puantablosu.html" class="text-zinc-500 hover:text-white transition font-bold">TABLO →</a>
+    <header class="py-12 text-center relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-red-600 to-transparent"></div>
+        <a href="index.html" class="text-[10px] tracking-[0.5em] text-zinc-500 hover:text-red-500 transition-all uppercase font-bold">MAMOBALL PROFESYONEL LİGİ</a>
+        <h1 class="text-6xl title-font font-black italic mt-4 glow-text tracking-tighter">MPL<span class="text-red-600">NEWS</span></h1>
+        <div class="flex justify-center gap-8 mt-6">
+            <a href="index.html" class="text-xs font-bold hover:text-red-600 transition">ANA SAYFA</a>
+            <a href="puantablosu.html" class="text-xs font-bold hover:text-red-600 transition">TABLO</a>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto p-6 space-y-8">
-        <section id="news-admin" class="hidden bg-zinc-900 p-8 rounded-[2rem] border-2 border-red-600 mb-10 shadow-2xl">
-            <h2 class="text-xl font-black mb-4 uppercase italic text-red-600">HABER YAYINLA</h2>
-            <input type="text" id="news-title" placeholder="BAŞLIK" class="w-full bg-black p-3 rounded mb-3 border border-zinc-800 text-white font-bold">
-            <textarea id="news-content" placeholder="HABER DETAYI..." class="w-full bg-black p-3 rounded h-32 border border-zinc-800 text-white"></textarea>
-            <input type="text" id="news-image-url" placeholder="RESİM URL (LİNK)" class="w-full bg-black p-3 rounded mt-3 border border-zinc-800 text-white font-medium">
-            <button onclick="haberEkle()" class="w-full bg-red-600 p-4 rounded-xl font-black uppercase text-white mt-4 hover:bg-red-700 transition shadow-lg">MANŞETE TAŞI</button>
+    <main class="max-w-5xl mx-auto px-6 pb-24">
+        <section id="news-admin" class="hidden glass p-10 rounded-[3rem] neon-border mb-16 transition-all animate-pulse">
+            <h2 class="text-2xl title-font font-black mb-6 text-red-600 italic">YENİ MANŞET OLUŞTUR</h2>
+            <div class="grid grid-cols-1 gap-4">
+                <input type="text" id="news-title" placeholder="BAŞLIK" class="bg-black/50 p-5 rounded-2xl border border-zinc-800 focus:border-red-600 outline-none text-xl font-bold uppercase tracking-tighter">
+                <textarea id="news-content" placeholder="HABER DETAYI..." class="bg-black/50 p-5 rounded-2xl border border-zinc-800 focus:border-red-600 outline-none h-40"></textarea>
+                <input type="text" id="news-image-url" placeholder="RESİM URL" class="bg-black/50 p-5 rounded-2xl border border-zinc-800 focus:border-red-600 outline-none">
+                <button onclick="haberEkle()" class="bg-red-600 hover:bg-red-700 p-6 rounded-2xl font-black uppercase tracking-widest transition-all shadow-lg active:scale-95">YAYINLA 🚀</button>
+            </div>
         </section>
 
-        <div id="news-container" class="space-y-8 pb-20"></div>
+        <div id="news-container" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
     </main>
 
+    <div id="news-modal" class="fixed inset-0 bg-black/90 backdrop-blur-2xl z-[100] hidden overflow-y-auto p-4 flex items-center justify-center">
+        <div class="max-w-4xl w-full glass rounded-[4rem] border border-red-900/30 overflow-hidden relative shadow-2xl">
+            <button onclick="modalKapat()" class="absolute top-8 right-8 text-zinc-500 hover:text-red-600 text-4xl font-black z-50">&times;</button>
+            
+            <div id="modal-content" class="p-10 md:p-16"></div>
+            
+            <div class="bg-black/40 p-10 border-t border-white/5">
+                <h4 class="title-font text-red-600 font-black italic uppercase mb-8 tracking-[0.3em]">YORUMLAR</h4>
+                <div id="comment-list" class="space-y-6 mb-12 max-h-60 overflow-y-auto pr-4"></div>
+                
+                <div class="grid gap-4 bg-zinc-900/50 p-8 rounded-[2rem] border border-white/5">
+                    <input type="text" id="comment-name" placeholder="ADINIZ" class="bg-black/50 p-4 rounded-xl border border-zinc-800 outline-none text-white font-bold uppercase text-xs">
+                    <textarea id="comment-text" placeholder="YORUMUNUZ..." class="bg-black/50 p-4 rounded-xl border border-zinc-800 outline-none text-sm h-24"></textarea>
+                    
+                    <div class="flex items-center justify-between gap-4">
+                        <span id="bot-soru" class="text-[10px] font-black text-zinc-500 italic uppercase"></span>
+                        <input type="number" id="bot-cevap" class="w-20 bg-red-900/20 p-3 rounded-lg border border-red-600/30 text-center font-black text-red-500">
+                        <button onclick="yorumYap()" class="bg-red-600 p-4 px-10 rounded-xl font-black uppercase text-xs hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] transition-all">GÖNDER</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        let haberler = JSON.parse(localStorage.getItem('mpl_haberler')) || [
-            { baslik: "MPL SEZONU RESMEN BAŞLIYOR!", icerik: "3LosTSouL4 yönetimi devraldı. Takımlar lig heyecanı için hazır.", image_url: "", tarih: "2026" }
-        ];
+        let haberler = JSON.parse(localStorage.getItem('mpl_haberler')) || [];
+        let aktifHaberIndex = null;
+        let dogruCevap = 0;
+
+        function botKontrolOlustur() {
+            const n1 = Math.floor(Math.random() * 9) + 1;
+            const n2 = Math.floor(Math.random() * 9) + 1;
+            dogruCevap = n1 + n2;
+            document.getElementById('bot-soru').innerText = `GÜVENLİK: ${n1} + ${n2} = ?`;
+        }
 
         function haberleriGoster() {
             const container = document.getElementById('news-container');
             container.innerHTML = '';
             [...haberler].reverse().forEach((h, index) => {
                 const realIndex = haberler.length - 1 - index;
-                const img = h.image_url ? `<img src="${h.image_url}" class="w-full h-auto mt-4 rounded-2xl shadow-2xl">` : '';
+                const img = h.image_url ? `<img src="${h.image_url}" class="w-full h-64 object-cover">` : `<div class="w-full h-64 bg-zinc-900 flex items-center justify-center text-zinc-800 title-font font-black text-4xl">MPL</div>`;
                 container.innerHTML += `
-                    <article class="bg-zinc-950 p-8 rounded-[2.5rem] border border-zinc-900 relative">
-                        <div class="absolute top-0 left-0 w-1.5 h-full bg-red-600"></div>
-                        <span class="text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em]">${h.tarih}</span>
-                        <h3 class="text-2xl font-black italic mt-2 text-white uppercase tracking-tighter">${h.baslik}</h3>
-                        <p class="text-zinc-400 mt-4 leading-relaxed font-medium">${h.icerik}</p>
-                        ${img}
-                        <button onclick="haberSil(${realIndex})" class="mt-6 text-[10px] text-zinc-800 hover:text-red-600 uppercase font-black transition admin-only hidden">HABERİ SİL</button>
+                    <article onclick="haberAc(${realIndex})" class="glass rounded-[3rem] overflow-hidden group cursor-pointer transition-all duration-500 hover:neon-border hover:-translate-y-2">
+                        <div class="relative overflow-hidden">${img}<div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80"></div></div>
+                        <div class="p-10 relative">
+                            <span class="text-[9px] font-black text-red-600 tracking-[0.4em] uppercase mb-4 block">${h.tarih || 'NEW'}</span>
+                            <h3 class="text-3xl title-font font-black italic uppercase leading-none mb-4 group-hover:text-red-500 transition-colors">${h.baslik}</h3>
+                            <p class="text-zinc-500 text-sm line-clamp-2 mb-6 font-medium">${h.icerik}</p>
+                            <div class="flex items-center text-[10px] font-black uppercase tracking-widest text-white/40 group-hover:text-red-600 transition-all">TAMAMI VE YORUMLAR <span class="ml-2 group-hover:ml-4 transition-all">→</span></div>
+                        </div>
                     </article>
                 `;
             });
         }
 
-        function adminLogin() {
-            const s = prompt("YÖNETİCİ ŞİFRESİ:");
-            if (s === "c2014add") { document.getElementById('news-admin').classList.remove('hidden'); document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden')); }
+        function haberAc(index) {
+            aktifHaberIndex = index;
+            const h = haberler[index];
+            document.getElementById('modal-content').innerHTML = `
+                <span class="text-xs font-black text-red-600 tracking-widest uppercase mb-4 block">${h.tarih || ''}</span>
+                <h2 class="text-5xl title-font font-black italic uppercase text-white leading-none tracking-tighter mb-10">${h.baslik}</h2>
+                ${h.image_url ? `<img src="${h.image_url}" class="w-full h-auto rounded-[3rem] shadow-2xl mb-10">` : ''}
+                <div class="bg-white/5 p-8 rounded-[2rem] border border-white/5">
+                    <p class="text-zinc-300 text-xl leading-relaxed font-medium">${h.icerik}</p>
+                </div>
+            `;
+            botKontrolOlustur();
+            yorumlarıGoster();
+            document.getElementById('news-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function modalKapat() { document.getElementById('news-modal').classList.add('hidden'); document.body.style.overflow = 'auto'; }
+
+        function yorumYap() {
+            const ad = document.getElementById('comment-name').value;
+            const metin = document.getElementById('comment-text').value;
+            const cevap = parseInt(document.getElementById('bot-cevap').value);
+
+            if (cevap !== dogruCevap) { alert("DOĞRULAMA HATALI!"); return; }
+            if (ad && metin) {
+                if (!haberler[aktifHaberIndex].yorumlar) haberler[aktifHaberIndex].yorumlar = [];
+                haberler[aktifHaberIndex].yorumlar.push({ ad, metin, saat: new Date().toLocaleTimeString('tr-TR', {hour: '2-digit', minute:'2-digit'}) });
+                localStorage.setItem('mpl_haberler', JSON.stringify(haberler));
+                document.getElementById('comment-name').value = '';
+                document.getElementById('comment-text').value = '';
+                document.getElementById('bot-cevap').value = '';
+                botKontrolOlustur();
+                yorumlarıGoster();
+            }
+        }
+
+        function yorumlarıGoster() {
+            const list = document.getElementById('comment-list');
+            list.innerHTML = '';
+            (haberler[aktifHaberIndex].yorumlar || []).forEach(y => {
+                list.innerHTML += `<div class="bg-white/5 p-6 rounded-2xl border border-white/5"><div class="flex justify-between items-center mb-2"><span class="text-red-600 font-black text-[12px] uppercase">${y.ad}</span><span class="text-[9px] text-zinc-600 font-bold">${y.saat || ''}</span></div><p class="text-zinc-400 text-sm font-medium italic">"${y.metin}"</p></div>`;
+            });
         }
 
         function haberEkle() {
@@ -63,17 +149,15 @@
             const c = document.getElementById('news-content').value;
             const i = document.getElementById('news-image-url').value;
             if (t && c) {
-                haberler.push({ baslik: t, icerik: c, image_url: i, tarih: new Date().toLocaleDateString('tr-TR') });
+                haberler.push({ baslik: t, icerik: c, image_url: i, tarih: new Date().toLocaleDateString('tr-TR'), yorumlar: [] });
                 localStorage.setItem('mpl_haberler', JSON.stringify(haberler));
+                document.getElementById('news-title').value = ''; document.getElementById('news-content').value = '';
                 haberleriGoster();
-                document.getElementById('news-title').value = ''; document.getElementById('news-content').value = ''; document.getElementById('news-image-url').value = '';
-                alert("HABER YAYINDA.");
+                alert("MANŞET PATLATILDI!");
             }
         }
 
-        function haberSil(i) {
-            if(confirm("Haberi sil?")) { haberler.splice(i, 1); localStorage.setItem('mpl_haberler', JSON.stringify(haberler)); haberleriGoster(); }
-        }
+        function adminLogin() { if (prompt("YÖNETİCİ ŞİFRESİ:") === "c2014add") document.getElementById('news-admin').classList.toggle('hidden'); }
         window.onload = haberleriGoster;
     </script>
 </body>
