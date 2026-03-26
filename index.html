@@ -14,9 +14,8 @@
 </head>
 <body class="p-6">
     <main id="auth-box" class="max-w-md w-full glass p-10 rounded-[3rem] neon-border text-center">
-        <h1 class="text-6xl title-font font-black italic mb-2 tracking-tighter">MPL<span class="text-red-600">.</span></h1>
+        <h1 class="text-6xl title-font font-black italic mb-2 tracking-tighter text-white">MPL<span class="text-red-600">.</span></h1>
         <p id="auth-title" class="text-[10px] tracking-[0.5em] text-zinc-500 font-bold mb-8 uppercase">YÖNETİM & OYUNCU GİRİŞİ</p>
-        
         <div class="space-y-4">
             <input type="text" id="username" placeholder="KULLANICI ADI" class="w-full bg-black/50 p-4 rounded-xl border border-zinc-800 outline-none uppercase font-bold text-xs focus:border-red-600 transition text-white">
             <input type="password" id="password" placeholder="ŞİFRE" class="w-full bg-black/50 p-4 rounded-xl border border-zinc-800 outline-none uppercase font-bold text-xs focus:border-red-600 transition text-white">
@@ -32,61 +31,44 @@
             <p id="rank-msg" class="text-red-600 text-[10px] font-black tracking-widest uppercase"></p>
             <button onclick="logout()" class="text-[8px] text-zinc-500 font-bold tracking-[0.5em] mt-4 uppercase underline">ÇIKIŞ YAP</button>
         </header>
-
         <div class="grid grid-cols-1 gap-6 px-4">
-            <a href="puantablosu.html" class="glass py-10 rounded-[3rem] hover:bg-red-600/10 transition-all border border-white/5">
-                <h2 class="text-2xl title-font font-black italic uppercase">TABLO</h2>
-            </a>
-            <a href="mplhaber.html" class="glass py-10 rounded-[3rem] hover:bg-red-600/10 transition-all border border-white/5">
-                <h2 class="text-2xl title-font font-black italic uppercase">HABERLER</h2>
-            </a>
+            <a href="puantablosu.html" class="glass py-10 rounded-[3rem] hover:bg-red-600/10 transition-all border border-white/5"><h2 class="text-2xl title-font font-black italic uppercase">TABLO</h2></a>
+            <a href="mplhaber.html" class="glass py-10 rounded-[3rem] hover:bg-red-600/10 transition-all border border-white/5"><h2 class="text-2xl title-font font-black italic uppercase">HABERLER</h2></a>
         </div>
     </main>
 
     <script>
         let isLogin = true;
-        // OTOMATİK EKLEME: Kurucu ve Adminler burada tanımlı
+        // YENİ KADRO BURADA
         const staff = [
             {username: "3LosTSouL4", password: "c2014add", rank: "KURUCU"},
+            {username: "TheKing", password: "Hga2009", rank: "KURUCU ORTAĞI"},
             {username: "Musticardi", password: "Veneto2010", rank: "ADMİN"},
             {username: "Rennex", password: "MPL2024", rank: "ADMİN"}
         ];
 
         let users = JSON.parse(localStorage.getItem('mpl_users')) || [];
 
-        function toggleAuth() {
-            isLogin = !isLogin;
-            document.getElementById('auth-title').innerText = isLogin ? "GİRİŞ YAP" : "KAYIT OL";
-            document.getElementById('auth-btn').innerText = isLogin ? "GİRİŞ YAP" : "KAYIT OL";
-        }
+        function toggleAuth() { isLogin = !isLogin; document.getElementById('auth-title').innerText = isLogin ? "GİRİŞ YAP" : "KAYIT OL"; }
 
         function handleAuth() {
             const u = document.getElementById('username').value.trim();
             const p = document.getElementById('password').value.trim();
+            if(!u || !p) return;
 
-            if(!u || !p) return alert("BOŞ BIRAKMA!");
+            const found = staff.find(x => x.username.toLowerCase() === u.toLowerCase() && x.password === p) || 
+                          users.find(x => x.username.toLowerCase() === u.toLowerCase() && x.password === p);
 
-            if(isLogin) {
-                // Önce staff (admin) kontrolü, sonra normal kullanıcı
-                const adminUser = staff.find(x => x.username.toLowerCase() === u.toLowerCase() && x.password === p);
-                const normalUser = users.find(x => x.username.toLowerCase() === u.toLowerCase() && x.password === p);
-                
-                const foundUser = adminUser || normalUser;
-
-                if(foundUser) {
-                    sessionStorage.setItem('loggedInUser', JSON.stringify(foundUser));
-                    showMenu(foundUser);
-                } else {
-                    alert("KULLANICI ADI VEYA ŞİFRE HATALI!");
-                }
+            if(found) {
+                sessionStorage.setItem('loggedInUser', JSON.stringify(found));
+                showMenu(found);
             } else {
-                if(users.find(x => x.username.toLowerCase() === u.toLowerCase()) || staff.find(x => x.username.toLowerCase() === u.toLowerCase())) {
-                    return alert("BU İSİM ZATEN VAR!");
-                }
-                users.push({username: u, password: p, rank: "OYUNCU"});
-                localStorage.setItem('mpl_users', JSON.stringify(users));
-                alert("KAYIT BAŞARILI! ŞİMDİ GİRİŞ YAP.");
-                toggleAuth();
+                if(!isLogin) {
+                    users.push({username:u, password:p, rank:"OYUNCU"});
+                    localStorage.setItem('mpl_users', JSON.stringify(users));
+                    alert("KAYIT OK! GİRİŞ YAP.");
+                    toggleAuth();
+                } else alert("HATALI BİLGİ!");
             }
         }
 
@@ -98,11 +80,7 @@
         }
 
         function logout() { sessionStorage.removeItem('loggedInUser'); location.reload(); }
-
-        window.onload = () => {
-            const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
-            if(user) showMenu(user);
-        }
+        window.onload = () => { const user = JSON.parse(sessionStorage.getItem('loggedInUser')); if(user) showMenu(user); }
     </script>
 </body>
 </html>
