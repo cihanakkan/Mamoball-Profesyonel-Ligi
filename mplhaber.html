@@ -3,80 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MPL - Puan Durumu</title>
+    <title>MPL - Haberler</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-black text-white font-sans text-[13px]">
-    <button onclick="adminLogin()" class="fixed top-2 right-2 opacity-5 hover:opacity-100 text-[10px] bg-zinc-800 p-1 rounded text-white">YÖNETİM</button>
+<body class="bg-black text-white font-sans text-[14px]">
+    <button onclick="adminLogin()" class="fixed top-2 right-2 opacity-10 hover:opacity-100 text-[10px] bg-zinc-800 p-1 rounded transition">YÖNETİM</button>
 
-    <header class="p-8 text-center border-b border-zinc-900 bg-zinc-950 shadow-xl">
-        <a href="index.html" class="text-[10px] text-red-600 font-black uppercase tracking-widest hover:text-white transition">← ANA SAYFA</a>
-        <h1 class="text-3xl font-black italic uppercase mt-4 text-white">PUAN TABLOSU</h1>
+    <header class="p-8 text-center border-b border-red-600 bg-zinc-950 shadow-2xl">
+        <div class="flex justify-between max-w-4xl mx-auto items-center uppercase font-black text-[10px]">
+            <a href="index.html" class="text-zinc-500 hover:text-white transition">← GERİ</a>
+            <h1 class="text-3xl italic text-red-600 tracking-tighter">MPL HABER</h1>
+            <a href="puantablosu.html" class="text-zinc-500 hover:text-white transition font-bold">TABLO →</a>
+        </div>
     </header>
 
-    <main class="max-w-4xl mx-auto p-4 md:p-10 space-y-10">
-        <section class="bg-zinc-950 p-6 rounded-3xl border border-zinc-900 shadow-2xl">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left uppercase italic font-bold">
-                    <thead class="bg-zinc-900 text-zinc-500 text-[10px]">
-                        <tr>
-                            <th class="p-4 rounded-tl-xl text-white">TAKIM</th>
-                            <th class="p-4 text-center">O</th>
-                            <th class="p-4 text-center">G</th>
-                            <th class="p-4 text-center text-red-600">P</th>
-                        </tr>
-                    </thead>
-                    <tbody id="puan-tablosu" class="divide-y divide-zinc-900"></tbody>
-                </table>
-            </div>
+    <main class="max-w-4xl mx-auto p-6 space-y-8">
+        <section id="news-admin" class="hidden bg-zinc-900 p-8 rounded-[2rem] border-2 border-red-600 mb-10 shadow-2xl">
+            <h2 class="text-xl font-black mb-4 uppercase italic text-red-600">HABER YAYINLA</h2>
+            <input type="text" id="news-title" placeholder="BAŞLIK" class="w-full bg-black p-3 rounded mb-3 border border-zinc-800 text-white font-bold">
+            <textarea id="news-content" placeholder="HABER DETAYI..." class="w-full bg-black p-3 rounded h-32 border border-zinc-800 text-white"></textarea>
+            <input type="text" id="news-image-url" placeholder="RESİM URL (LİNK)" class="w-full bg-black p-3 rounded mt-3 border border-zinc-800 text-white font-medium">
+            <button onclick="haberEkle()" class="w-full bg-red-600 p-4 rounded-xl font-black uppercase text-white mt-4 hover:bg-red-700 transition shadow-lg">MANŞETE TAŞI</button>
         </section>
 
-        <section id="admin-panel" class="hidden bg-zinc-900 p-8 rounded-[2rem] border-2 border-red-600 shadow-2xl">
-            <h2 id="admin-title" class="text-xl font-black mb-6 uppercase italic text-red-600">3LosTSouL4 YÖNETİM</h2>
-            <div id="admin-inputs" class="space-y-3"></div>
-            <button onclick="verileriKaydet()" class="mt-8 w-full bg-red-600 p-4 rounded-xl font-black uppercase text-white hover:bg-red-700 shadow-lg">GÜNCELLEMELERİ BAS</button>
-        </section>
+        <div id="news-container" class="space-y-8 pb-20"></div>
     </main>
 
     <script>
-        const adminler = [{ isim: "3LosTSouL4", sifre: "c2014add" }];
-        let takımlar = JSON.parse(localStorage.getItem('mpl_veriler')) || [
-            { ad: "BAYER LEVERKUSEN", o: 0, g: 0, p: 0 },
-            { ad: "INTER FC", o: 0, g: 0, p: 0 },
-            { ad: "ITALY", o: 0, g: 0, p: 0 },
-            { ad: "TOTTENHAM", o: 0, g: 0, p: 0 },
-            { ad: "SPORTING LIZBON", o: 0, g: 0, p: 0 },
-            { ad: "FLAMENGO", o: 0, g: 0, p: 0 }
+        let haberler = JSON.parse(localStorage.getItem('mpl_haberler')) || [
+            { baslik: "MPL SEZONU RESMEN BAŞLIYOR!", icerik: "3LosTSouL4 yönetimi devraldı. Takımlar lig heyecanı için hazır.", image_url: "", tarih: "2026" }
         ];
 
-        function tabloyuCiz() {
-            const tbody = document.getElementById('puan-tablosu');
-            const adminInputs = document.getElementById('admin-inputs');
-            tbody.innerHTML = ''; adminInputs.innerHTML = '';
-            takımlar.sort((a, b) => b.p - a.p);
-            takımlar.forEach((tk, index) => {
-                tbody.innerHTML += `<tr class="border-zinc-900 hover:bg-zinc-900/30 transition"><td class="p-5 text-white">${tk.ad}</td><td class="p-5 text-center text-zinc-500">${tk.o}</td><td class="p-5 text-center text-zinc-500">${tk.g}</td><td class="p-5 text-center text-red-600 text-xl font-black">${tk.p}</td></tr>`;
-                adminInputs.innerHTML += `<div class="flex items-center gap-3 bg-black p-2 rounded-lg border border-zinc-800"><span class="w-1/3 text-[10px] font-black text-gray-400">${tk.ad}</span><input type="number" value="${tk.o}" id="o-${index}" class="w-1/4 bg-zinc-800 p-1 rounded text-center text-white"><input type="number" value="${tk.g}" id="g-${index}" class="w-1/4 bg-zinc-800 p-1 rounded text-center text-white text-zinc-500"><input type="number" value="${tk.p}" id="p-${index}" class="w-1/4 bg-red-900/40 p-1 rounded text-center text-red-500 font-black"></div>`;
+        function haberleriGoster() {
+            const container = document.getElementById('news-container');
+            container.innerHTML = '';
+            [...haberler].reverse().forEach((h, index) => {
+                const realIndex = haberler.length - 1 - index;
+                const img = h.image_url ? `<img src="${h.image_url}" class="w-full h-auto mt-4 rounded-2xl shadow-2xl">` : '';
+                container.innerHTML += `
+                    <article class="bg-zinc-950 p-8 rounded-[2.5rem] border border-zinc-900 relative">
+                        <div class="absolute top-0 left-0 w-1.5 h-full bg-red-600"></div>
+                        <span class="text-[10px] text-zinc-600 font-black uppercase tracking-[0.2em]">${h.tarih}</span>
+                        <h3 class="text-2xl font-black italic mt-2 text-white uppercase tracking-tighter">${h.baslik}</h3>
+                        <p class="text-zinc-400 mt-4 leading-relaxed font-medium">${h.icerik}</p>
+                        ${img}
+                        <button onclick="haberSil(${realIndex})" class="mt-6 text-[10px] text-zinc-800 hover:text-red-600 uppercase font-black transition admin-only hidden">HABERİ SİL</button>
+                    </article>
+                `;
             });
         }
 
         function adminLogin() {
             const s = prompt("YÖNETİCİ ŞİFRESİ:");
-            if (s === "c2014add") { document.getElementById('admin-panel').classList.remove('hidden'); window.scrollTo(0, document.body.scrollHeight); }
+            if (s === "c2014add") { document.getElementById('news-admin').classList.remove('hidden'); document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden')); }
         }
 
-        function verileriKaydet() {
-            takımlar.forEach((tk, index) => {
-                tk.o = document.getElementById(`o-${index}`).value;
-                tk.g = document.getElementById(`g-${index}`).value;
-                tk.p = document.getElementById(`p-${index}`).value;
-            });
-            localStorage.setItem('mpl_veriler', JSON.stringify(takımlar));
-            tabloyuCiz();
-            document.getElementById('admin-panel').classList.add('hidden');
-            alert("TABLO GÜNCELLENDİ BAŞKAN.");
+        function haberEkle() {
+            const t = document.getElementById('news-title').value;
+            const c = document.getElementById('news-content').value;
+            const i = document.getElementById('news-image-url').value;
+            if (t && c) {
+                haberler.push({ baslik: t, icerik: c, image_url: i, tarih: new Date().toLocaleDateString('tr-TR') });
+                localStorage.setItem('mpl_haberler', JSON.stringify(haberler));
+                haberleriGoster();
+                document.getElementById('news-title').value = ''; document.getElementById('news-content').value = ''; document.getElementById('news-image-url').value = '';
+                alert("HABER YAYINDA.");
+            }
         }
-        window.onload = tabloyuCiz;
+
+        function haberSil(i) {
+            if(confirm("Haberi sil?")) { haberler.splice(i, 1); localStorage.setItem('mpl_haberler', JSON.stringify(haberler)); haberleriGoster(); }
+        }
+        window.onload = haberleriGoster;
     </script>
 </body>
 </html>
