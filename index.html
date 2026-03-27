@@ -19,7 +19,7 @@
         <div class="space-y-4">
             <input type="text" id="username" placeholder="KULLANICI ADI" class="w-full bg-black/50 p-4 rounded-xl border border-zinc-800 outline-none uppercase font-bold text-xs focus:border-red-600 transition text-white">
             <input type="password" id="password" placeholder="ŞİFRE" class="w-full bg-black/50 p-4 rounded-xl border border-zinc-800 outline-none uppercase font-bold text-xs focus:border-red-600 transition text-white">
-            <button onclick="handleAuth()" id="auth-btn" class="w-full bg-red-600 p-4 rounded-xl font-black uppercase text-sm hover:scale-105 transition shadow-lg shadow-red-900/20">GİRİŞ YAP</button>
+            <button onclick="handleAuth()" class="w-full bg-red-600 p-4 rounded-xl font-black uppercase text-sm hover:scale-105 transition shadow-lg shadow-red-900/20">GİRİŞ YAP</button>
             <p onclick="toggleAuth()" id="toggle-text" class="text-[9px] text-zinc-500 cursor-pointer hover:text-white mt-4 uppercase tracking-widest font-bold">YENİ KAYIT OLUŞTUR</p>
         </div>
     </main>
@@ -42,7 +42,6 @@
 
     <script>
         let isLogin = true;
-        // GÜNCEL KADRO VE RENNIX ŞİFRESİ
         const staff = [
             {username: "3LosTSouL4", password: "c2014add", rank: "KURUCU"},
             {username: "TheKing", password: "Hga2009", rank: "KURUCU ORTAĞI"},
@@ -50,31 +49,42 @@
             {username: "Rennex", password: "MPLADMİN2024", rank: "ADMİN"}
         ];
 
-        let users = JSON.parse(localStorage.getItem('mpl_users')) || [];
-
         function toggleAuth() { isLogin = !isLogin; document.getElementById('auth-title').innerText = isLogin ? "GİRİŞ YAP" : "KAYIT OL"; }
 
         function handleAuth() {
-            const u = document.getElementById('username').value.trim();
-            const p = document.getElementById('password').value.trim();
-            if(!u || !p) return alert("BOŞ BIRAKMA!");
+            const uInput = document.getElementById('username').value.trim();
+            const pInput = document.getElementById('password').value.trim();
+            if(!uInput || !pInput) return alert("BOŞ BIRAKMA!");
 
-            const localPass = localStorage.getItem('pass_' + u.toLowerCase());
-            const adminUser = staff.find(x => x.username.toLowerCase() === u.toLowerCase());
+            let users = JSON.parse(localStorage.getItem('mpl_users')) || [];
             
-            // Eğer admin şifresini değiştirmişse localStorage'dan al, değiştirmemişse staff listesinden al
-            const currentPass = localPass || (adminUser ? adminUser.password : null);
-            const normalUser = users.find(x => x.username.toLowerCase() === u.toLowerCase() && x.password === p);
-
             if(isLogin) {
-                if((adminUser && p === currentPass) || normalUser) {
-                    const userObj = adminUser ? {...adminUser, password: currentPass} : normalUser;
-                    sessionStorage.setItem('loggedInUser', JSON.stringify(userObj));
-                    showMenu(userObj);
-                } else { alert("HATALI GİRİŞ!"); }
+                // ÖNCE ADMIN KONTROLÜ
+                const admin = staff.find(s => s.username.toUpperCase() === uInput.toUpperCase());
+                if(admin) {
+                    const savedPass = localStorage.getItem('pass_' + admin.username.toLowerCase());
+                    const currentPass = savedPass || admin.password;
+                    
+                    if(pInput === currentPass) {
+                        sessionStorage.setItem('loggedInUser', JSON.stringify({...admin, password: currentPass}));
+                        return showMenu(admin);
+                    }
+                }
+
+                // SONRA NORMAL KULLANICI KONTROLÜ
+                const normal = users.find(x => x.username.toUpperCase() === uInput.toUpperCase() && x.password === pInput);
+                if(normal) {
+                    sessionStorage.setItem('loggedInUser', JSON.stringify(normal));
+                    return showMenu(normal);
+                }
+                
+                alert("HATALI GİRİŞ!");
             } else {
-                if(adminUser || users.find(x => x.username.toLowerCase() === u.toLowerCase())) return alert("BU İSİM VAR!");
-                users.push({username: u, password: p, rank: "OYUNCU"});
+                // KAYIT OLMA
+                if(staff.find(s => s.username.toUpperCase() === uInput.toUpperCase()) || users.find(x => x.username.toUpperCase() === uInput.toUpperCase())) {
+                    return alert("BU İSİM KULLANILIYOR!");
+                }
+                users.push({username: uInput, password: pInput, rank: "OYUNCU"});
                 localStorage.setItem('mpl_users', JSON.stringify(users));
                 alert("KAYIT BAŞARILI!"); toggleAuth();
             }
@@ -82,15 +92,15 @@
 
         function changePass() {
             const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
-            const newP = prompt("YENİ ŞİFRENİ YAZ:");
+            const newP = prompt("YENİ ŞİFRE:");
             if(newP && newP.length > 3) {
                 localStorage.setItem('pass_' + user.username.toLowerCase(), newP);
-                // Eğer normal kullanıcıysa users listesinde de güncelle
-                let uIndex = users.findIndex(x => x.username.toLowerCase() === user.username.toLowerCase());
-                if(uIndex !== -1) { users[uIndex].password = newP; localStorage.setItem('mpl_users', JSON.stringify(users)); }
-                alert("ŞİFRE GÜNCELLENDİ! TEKRAR GİRİŞ YAP.");
-                logout();
-            } else { alert("ŞİFRE ÇOK KISA!"); }
+                // Normal kullanıcıysa listesini güncelle
+                let users = JSON.parse(localStorage.getItem('mpl_users')) || [];
+                let idx = users.findIndex(x => x.username.toLowerCase() === user.username.toLowerCase());
+                if(idx !== -1) { users[idx].password = newP; localStorage.setItem('mpl_users', JSON.stringify(users)); }
+                alert("ŞİFRE DEĞİŞTİ. TEKRAR GİRİŞ YAP!"); logout();
+            }
         }
 
         function showMenu(user) {
@@ -105,3 +115,4 @@
     </script>
 </body>
 </html>
+
