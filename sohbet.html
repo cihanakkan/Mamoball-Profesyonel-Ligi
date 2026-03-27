@@ -3,100 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MPL - Genel Sohbet</title>
+    <title>Sohbet</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background: #000; color: white; margin: 0; overflow: hidden; }
-        .chat-container { height: calc(100vh - 140px); overflow-y: auto; scroll-behavior: smooth; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .msg-bubble { max-width: 80%; padding: 10px 15px; border-radius: 15px; margin-bottom: 8px; position: relative; }
-        .my-msg { background: #dc2626; margin-left: auto; border-bottom-right-radius: 2px; }
-        .other-msg { background: #27272a; margin-right: auto; border-bottom-left-radius: 2px; }
-    </style>
 </head>
-<body class="p-4 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-zinc-900 via-black to-black">
-
-    <div class="flex items-center justify-between mb-4 glass p-4 rounded-2xl">
-        <div class="flex items-center gap-3">
-            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-            <h1 class="font-black italic uppercase tracking-widest text-sm">GENEL SOHBET</h1>
-        </div>
-        <a href="index.html" class="text-[10px] font-black bg-zinc-800 px-4 py-2 rounded-lg hover:bg-red-600 transition">GERİ DÖN</a>
+<body class="bg-black text-white p-4">
+    <div class="flex justify-between mb-4">
+        <h1 class="font-bold text-red-600">SOHBET</h1>
+        <a href="index.html" class="text-xs bg-zinc-800 p-2 rounded">GERİ</a>
     </div>
-
-    <div id="chat-screen" class="chat-container space-y-3 p-2">
-        <div class="text-center text-[10px] text-zinc-600 uppercase tracking-widest my-4">Sohbet Başlatıldı</div>
-    </div>
-
-    <div class="fixed bottom-4 left-4 right-4 flex gap-2">
-        <input type="text" id="chat-input" placeholder="Mesajını yaz kral..." class="flex-1 bg-zinc-900 border border-white/10 p-4 rounded-2xl text-sm outline-none focus:border-red-600 transition">
-        <button onclick="sendMessage()" class="bg-red-600 p-4 rounded-2xl font-black text-xs hover:scale-105 active:scale-95 transition shadow-lg shadow-red-600/20">GÖNDER</button>
+    <div id="box" class="h-96 bg-zinc-900 rounded-xl p-4 overflow-y-auto mb-4 border border-white/5"></div>
+    <div class="flex gap-2">
+        <input id="in" type="text" class="flex-1 bg-zinc-800 p-3 rounded-lg outline-none">
+        <button onclick="send()" class="bg-red-600 px-4 rounded-lg">OK</button>
     </div>
 
     <script>
-        // index.html'den giriş yapan kullanıcıyı al
-        const session = JSON.parse(localStorage.getItem('mpl_user'));
-        const username = session ? session.username : "Misafir";
-
-        // MESAJ GÖNDERME
-        function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const text = input.value.trim();
-            if(!text) return;
-
-            // Mesaj Objesi
-            const msgData = {
-                u: username,
-                t: text,
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            };
-
-            // Not: Gerçek bir veritabanı (Firebase vb.) eklenene kadar 
-            // mesajlar sadece bu tarayıcıda geçici durur.
-            saveMessage(msgData);
-            input.value = "";
-        }
-
-        function saveMessage(data) {
-            let chatHistory = JSON.parse(localStorage.getItem('mpl_global_chat')) || [];
-            chatHistory.push(data);
-            
-            // Son 50 mesajı tut (Hafıza şişmesin)
-            if(chatHistory.length > 50) chatHistory.shift();
-            
-            localStorage.setItem('mpl_global_chat', JSON.stringify(chatHistory));
-            renderChat();
-        }
-
-        function renderChat() {
-            const screen = document.getElementById('chat-screen');
-            const chatHistory = JSON.parse(localStorage.getItem('mpl_global_chat')) || [];
-            
-            screen.innerHTML = chatHistory.map(m => `
-                <div class="msg-bubble ${m.u === username ? 'my-msg' : 'other-msg'}">
-                    <div class="text-[9px] font-black opacity-50 mb-1 uppercase">${m.u}</div>
-                    <div class="text-sm font-medium">${m.t}</div>
-                    <div class="text-[8px] text-right mt-1 opacity-40">${m.time}</div>
-                </div>
-            `).join('');
-            
-            screen.scrollTop = screen.scrollHeight;
-        }
-
-        // Giriş yapılmamışsa ana sayfaya şutla
+        // index.html'deki localStorage verisiyle eşitledim
+        const session = localStorage.getItem('mpl_user');
         if(!session) {
             alert("SOHBET İÇİN GİRİŞ YAPMALISIN!");
             location.href = "index.html";
         }
+        const myName = JSON.parse(session).u;
 
-        // Enter ile gönderme
-        document.getElementById('chat-input').addEventListener('keypress', (e) => {
-            if(e.key === 'Enter') sendMessage();
-        });
+        function send() {
+            const input = document.getElementById('in');
+            if(!input.value.trim()) return;
+            const msgs = JSON.parse(localStorage.getItem('mpl_msgs')) || [];
+            msgs.push({ u: myName, t: input.value });
+            localStorage.setItem('mpl_msgs', JSON.stringify(msgs));
+            input.value = "";
+            render();
+        }
 
-        // Sayfa açıldığında render et
-        renderChat();
+        function render() {
+            const msgs = JSON.parse(localStorage.getItem('mpl_msgs')) || [];
+            document.getElementById('box').innerHTML = msgs.map(m => `
+                <div class="mb-2">
+                    <span class="text-red-600 text-[10px] font-bold">${m.u}:</span>
+                    <span class="text-sm">${m.t}</span>
+                </div>
+            `).join('');
+        }
+        window.onload = render;
     </script>
 </body>
 </html>
