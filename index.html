@@ -11,8 +11,8 @@
         .title-font { font-family: 'Orbitron', sans-serif; }
         .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
         .glass-hover:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(220, 38, 38, 0.4); transform: translateY(-2px); }
-        input { background: rgba(255, 255, 255, 0.05) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; outline: none; }
-        input:focus { border-color: #dc2626 !important; }
+        input { background: rgba(255, 255, 255, 0.05) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; outline: none; transition: 0.3s; color: white; }
+        input:focus { border-color: #dc2626 !important; background: rgba(220, 38, 38, 0.05) !important; }
         .live-dot { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 1; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { opacity: 0.3; box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { opacity: 1; } }
     </style>
@@ -22,72 +22,39 @@
     <header class="text-center mb-10">
         <div class="relative inline-block">
             <img src="https://raw.githubusercontent.com/cihanakk/Mamoball-Profesyonel-Ligi/main/1000090222.webp" class="w-32 h-32 rounded-full border-4 border-red-600/20 shadow-[0_0_50px_rgba(220,38,38,0.2)] mb-6">
-            <div class="absolute -bottom-2 -right-2 bg-red-600 text-[8px] font-black px-3 py-1 rounded-full italic tracking-widest shadow-lg uppercase">MPL LİG</div>
+            <div class="absolute -bottom-2 -right-2 bg-red-600 text-[8px] font-black px-3 py-1 rounded-full italic tracking-widest shadow-lg uppercase font-bold text-white">MPL LİG</div>
         </div>
         <h1 class="text-4xl title-font font-black italic tracking-tighter uppercase">MAMO<span class="text-red-600 text-5xl">BALL</span></h1>
-        <p id="sub-title" class="text-[10px] font-bold text-zinc-500 tracking-[0.5em] uppercase mt-2 italic text-center">Giriş Gerekli</p>
+        <p id="sub-title" class="text-[10px] font-bold text-zinc-500 tracking-[0.5em] uppercase mt-2 italic text-center">Yükleniyor...</p>
     </header>
 
     <section id="login-section" class="w-full max-w-sm space-y-4">
         <div class="glass p-8 rounded-[2.5rem] border border-white/5 shadow-2xl">
             <div class="space-y-4">
-                <input type="text" id="username" placeholder="KULLANICI ADI" class="w-full p-4 rounded-2xl text-xs font-bold uppercase tracking-wider text-white">
-                <input type="password" id="password" placeholder="ŞİFRE" class="w-full p-4 rounded-2xl text-xs font-bold tracking-wider text-white">
-                <button onclick="handleAuth('login')" class="w-full bg-red-600 p-4 rounded-2xl font-black uppercase text-xs shadow-lg hover:scale-[1.02] transition-all mt-2">LİGE GİRİŞ YAP</button>
-                <button onclick="handleAuth('register')" class="w-full text-[9px] font-black text-zinc-500 uppercase tracking-widest hover:text-white transition">HESAP OLUŞTUR</button>
+                <input type="text" id="username" placeholder="KULLANICI ADI" class="w-full p-4 rounded-2xl text-xs font-bold uppercase tracking-wider">
+                <input type="password" id="password" placeholder="ŞİFRE" class="w-full p-4 rounded-2xl text-xs font-bold tracking-wider">
+                <button onclick="handleAuth()" class="w-full bg-red-600 p-4 rounded-2xl font-black uppercase text-xs shadow-lg hover:scale-[1.02] transition-all mt-2">LİGE GİRİŞ YAP</button>
             </div>
         </div>
     </section>
 
     <main id="menu-section" class="hidden w-full max-w-sm space-y-4">
         <a href="canliskor.html" class="glass glass-hover p-5 rounded-[2rem] flex items-center justify-between border-red-600/30">
-            <div class="flex items-center gap-4">
-                <div class="live-dot"></div>
-                <span class="title-font font-black italic uppercase text-sm tracking-widest">CANLI SKOR</span>
-            </div>
+            <div class="flex items-center gap-4"><div class="live-dot"></div><span class="title-font font-black italic uppercase text-sm tracking-widest">CANLI SKOR</span></div>
             <span class="text-red-600 font-black">>></span>
         </a>
-
         <a href="puantablosu.html" class="glass glass-hover p-5 rounded-[2rem] flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <span class="text-xl">📊</span>
-                <span class="title-font font-black italic uppercase text-sm tracking-widest text-zinc-300">PUAN DURUMU</span>
-            </div>
+            <div class="flex items-center gap-4"><span class="text-xl">📊</span><span class="title-font font-black italic uppercase text-sm tracking-widest text-zinc-300">PUAN DURUMU</span></div>
             <span class="text-zinc-600">→</span>
         </a>
-
         <a href="istatistik.html" class="glass glass-hover p-5 rounded-[2rem] flex items-center justify-between border-yellow-600/10">
-            <div class="flex items-center gap-4">
-                <span class="text-xl">🏆</span>
-                <span class="title-font font-black italic uppercase text-sm tracking-widest text-yellow-500">GOL KRALLIĞI</span>
-            </div>
+            <div class="flex items-center gap-4"><span class="text-xl">🏆</span><span class="title-font font-black italic uppercase text-sm tracking-widest text-yellow-500">GOL KRALLIĞI</span></div>
             <span class="text-zinc-500">→</span>
         </a>
-
-        <a href="sohbet.html" class="glass glass-hover p-5 rounded-[2rem] flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <span class="text-xl">💬</span>
-                <span class="title-font font-black italic uppercase text-sm tracking-widest text-zinc-300">GENEL SOHBET</span>
-            </div>
-            <span class="text-zinc-600">→</span>
-        </a>
-
-        <a href="ozelsohbet.html" class="glass glass-hover p-5 rounded-[2rem] flex items-center justify-between border-blue-600/10">
-            <div class="flex items-center gap-4">
-                <span class="text-xl">🔒</span>
-                <span class="title-font font-black italic uppercase text-sm tracking-widest text-blue-400">ÖZEL MESAJ</span>
-            </div>
-            <span class="text-zinc-500">→</span>
-        </a>
-
         <a href="mplhaber.html" class="glass glass-hover p-5 rounded-[2rem] flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <span class="text-xl">📰</span>
-                <span class="title-font font-black italic uppercase text-sm tracking-widest text-zinc-300">HABERLER</span>
-            </div>
+            <div class="flex items-center gap-4"><span class="text-xl">📰</span><span class="title-font font-black italic uppercase text-sm tracking-widest text-zinc-300">HABERLER</span></div>
             <span class="text-zinc-600">→</span>
         </a>
-
         <button onclick="logout()" class="w-full text-[9px] font-black text-zinc-700 uppercase tracking-[0.4em] hover:text-red-600 transition pt-4">OTURUMU KAPAT</button>
     </main>
 
@@ -96,6 +63,15 @@
     </footer>
 
     <script>
+        // KEMİK KADRO HESAPLARI: İSİM ÜSTTE / ŞİFRE ALTTA
+        const KEMIK_HESAPLAR = [
+            { u: "3LOSTSOUL4", p: "c2014add", r: "KURUCU" },
+            { u: "THEKING", p: "Hga2009", r: "YÖNETİCİ" },
+            { u: "MUSTICARDI", p: "Veneto2010", r: "OYUNCU" },
+            { u: "RENNIX", p: "MPLADMIN2024", r: "ADMİN" },
+            { u: "MAMO", p: "123456", r: "KURUCU" }
+        ];
+
         function checkStatus() {
             const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
             const loginSec = document.getElementById('login-section');
@@ -113,31 +89,17 @@
             }
         }
 
-        function handleAuth(type) {
-            const u = document.getElementById('username').value.trim().toUpperCase();
-            const p = document.getElementById('password').value.trim();
-            if(!u || !p) return alert("BOS BIRAKMA!");
+        function handleAuth() {
+            const uInput = document.getElementById('username').value.trim().toUpperCase();
+            const pInput = document.getElementById('password').value.trim();
 
-            let users = JSON.parse(localStorage.getItem('mpl_users')) || [];
+            const found = KEMIK_HESAPLAR.find(x => x.u === uInput && x.p === pInput);
 
-            if(type === 'register') {
-                if(users.find(x => x.username === u)) return alert("BU İSİM VAR!");
-                users.push({username: u, password: p, rank: "OYUNCU"});
-                localStorage.setItem('mpl_users', JSON.stringify(users));
-                alert("KAYIT OK! ŞİMDİ GİRİŞ YAP.");
+            if(found) {
+                sessionStorage.setItem('loggedInUser', JSON.stringify({username: found.u, rank: found.r}));
+                location.reload();
             } else {
-                // KURUCU BACKDOOR
-                if(u === "MAMO" && p === "123456") {
-                    sessionStorage.setItem('loggedInUser', JSON.stringify({username:"MAMO", rank:"KURUCU"}));
-                    return location.reload();
-                }
-                const found = users.find(x => x.username === u && x.password === p);
-                if(found) {
-                    sessionStorage.setItem('loggedInUser', JSON.stringify(found));
-                    location.reload();
-                } else {
-                    alert("HATALI GİRİŞ!");
-                }
+                alert("HATALI KULLANICI ADI VEYA ŞİFRE KRAL!");
             }
         }
 
