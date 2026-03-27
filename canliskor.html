@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPL - Canlı Skor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #000; color: white; margin: 0; padding: 20px; }
+        .title-font { font-family: 'Orbitron', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .live-dot { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body class="pb-20">
+    <div class="max-w-md mx-auto space-y-6">
+        <header class="text-center py-6">
+            <h1 class="text-3xl title-font font-black italic text-red-600 uppercase">CANLI <span class="text-white">SKOR</span></h1>
+            <a href="index.html" class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest mt-4 block">← ANA MENÜ</a>
+        </header>
+
+        <div id="match-list" class="space-y-4">
+            </div>
+
+        <div id="admin-score-panel" class="hidden glass p-6 rounded-[2.5rem] border border-red-600 mt-10 shadow-[0_0_20px_rgba(220,38,38,0.1)]">
+            <h2 class="text-xs font-black text-red-500 uppercase italic mb-6 text-center tracking-widest">MAÇ YÖNETİMİ</h2>
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <select id="t1" class="bg-white/5 p-3 rounded-xl text-[10px] font-black uppercase outline-none border border-white/5">
+                        <option value="BAYER LEVERKUSEN">LEVERKUSEN</option>
+                        <option value="INTER FC">INTER FC</option>
+                        <option value="ITALY FORMA">ITALY FORMA</option>
+                        <option value="TOTTENHAM">TOTTENHAM</option>
+                        <option value="HATAYSPOR">HATAYSPOR</option>
+                        <option value="FLAMENGO">FLAMENGO</option>
+                    </select>
+                    <select id="t2" class="bg-white/5 p-3 rounded-xl text-[10px] font-black uppercase outline-none border border-white/5">
+                        <option value="FLAMENGO">FLAMENGO</option>
+                        <option value="HATAYSPOR">HATAYSPOR</option>
+                        <option value="TOTTENHAM">TOTTENHAM</option>
+                        <option value="ITALY FORMA">ITALY FORMA</option>
+                        <option value="INTER FC">INTER FC</option>
+                        <option value="BAYER LEVERKUSEN">LEVERKUSEN</option>
+                    </select>
+                </div>
+                <div class="flex gap-3">
+                    <input type="number" id="s1" placeholder="0" class="w-1/2 bg-white/5 p-4 rounded-xl text-center font-black text-xl border border-white/5">
+                    <input type="number" id="s2" placeholder="0" class="w-1/2 bg-white/5 p-4 rounded-xl text-center font-black text-xl border border-white/5">
+                </div>
+                <input type="text" id="m-dk" placeholder="SÜRE (Örn: 12' veya MS)" class="w-full bg-white/5 p-3 rounded-xl text-[10px] font-black outline-none border border-white/5 uppercase">
+                <textarea id="m-scorers" placeholder="GOLCÜLER (Örn: Cihan 12', Musti 44')" class="w-full bg-white/5 p-3 rounded-xl text-[10px] font-bold outline-none border border-white/5 h-20 uppercase"></textarea>
+                <button onclick="macEkle()" class="w-full bg-red-600 p-4 rounded-xl font-black uppercase text-xs shadow-lg hover:bg-red-700 transition">SKORU CANLIYA AL</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
+        let matches = JSON.parse(localStorage.getItem('mpl_live_matches')) || [];
+
+        function renderMatches() {
+            const list = document.getElementById('match-list');
+            list.innerHTML = matches.length ? "" : "<p class='text-center text-zinc-700 text-[9px] font-black uppercase tracking-widest mt-10'>Henüz bir maç başlamadı.</p>";
+            
+            matches.forEach((m, i) => {
+                const isMS = m.dk.toUpperCase() === 'MS';
+                list.innerHTML += `
+                    <div class="glass p-6 rounded-[2.5rem] border border-white/5 shadow-xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-center w-1/3 text-[10px] font-black uppercase tracking-tighter">${m.t1}</div>
+                            <div class="text-center w-1/3">
+                                <p class="text-3xl font-black italic tracking-tighter">${m.s1}-${m.s2}</p>
+                                <div class="flex items-center justify-center gap-2 mt-1">
+                                    ${!isMS ? '<div class="live-dot"></div>' : ''}
+                                    <span class="text-[9px] font-black ${isMS ? 'text-zinc-500' : 'text-red-500'} uppercase">${m.dk}</span>
+                                </div>
+                            </div>
+                            <div class="text-center w-1/3 text-[10px] font-black uppercase tracking-tighter">${m.t2}</div>
+                        </div>
+                        ${m.scorers ? `
+                        <div class="border-t border-white/5 pt-3 text-center">
+                            <p class="text-[8px] text-zinc-600 font-black tracking-widest uppercase mb-1">GOLCÜLER</p>
+                            <p class="text-[10px] text-zinc-400 font-bold uppercase italic">${m.scorers}</p>
+                        </div>` : ''}
+                        ${(user && (user.rank === 'KURUCU' || user.rank === 'ADMİN')) ? `<button onclick="macSil(${i})" class="w-full mt-4 text-[8px] text-zinc-800 font-black uppercase hover:text-red-600 transition tracking-[0.2em]">MAÇI BİTİR VE SİL</button>` : ''}
+                    </div>`;
+            });
+
+            if(user && (user.rank === 'KURUCU' || user.rank === 'ADMİN')) {
+                document.getElementById('admin-score-panel').classList.remove('hidden');
+            }
+        }
+
+        function macEkle() {
+            const m = { 
+                t1: document.getElementById('t1').value, 
+                t2: document.getElementById('t2').value, 
+                s1: document.getElementById('s1').value || 0, 
+                s2: document.getElementById('s2').value || 0, 
+                dk: document.getElementById('m-dk').value || "0'",
+                scorers: document.getElementById('m-scorers').value 
+            };
+            if(m.t1 === m.t2) return alert("KENDİ KENDİNE Mİ OYNAYACAK KRAL?");
+            matches.push(m);
+            localStorage.setItem('mpl_live_matches', JSON.stringify(matches));
+            location.reload();
+        }
+
+        function macSil(i) {
+            if(confirm("Maçı listeden kaldırmak istiyor musun?")) {
+                matches.splice(i, 1);
+                localStorage.setItem('mpl_live_matches', JSON.stringify(matches));
+                renderMatches();
+            }
+        }
+
+        window.onload = renderMatches;
+    </script>
+</body>
+</html>
+
