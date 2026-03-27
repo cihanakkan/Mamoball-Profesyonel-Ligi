@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPL - Admin Başvurusu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #000; color: white; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .title-font { font-family: 'Orbitron', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .neon-border { border: 1px solid rgba(59, 130, 246, 0.5); box-shadow: 0 0 30px rgba(59, 130, 246, 0.1); }
+    </style>
+</head>
+<body class="p-6">
+    <main class="max-w-md w-full glass p-10 rounded-[3rem] neon-border text-center">
+        <header class="mb-8">
+            <h1 class="text-3xl title-font font-black italic uppercase text-blue-500 mb-2">ADMİN <span class="text-white">BAŞVURU</span></h1>
+            <p class="text-[9px] tracking-[0.3em] text-zinc-500 font-bold uppercase">Ligi Yönetmeye Aday mısın?</p>
+        </header>
+
+        <form id="apply-form" class="space-y-4">
+            <div class="text-left">
+                <label class="text-[8px] font-black text-zinc-500 ml-4 uppercase tracking-widest">Kullanıcı Adın</label>
+                <input type="text" id="apply-user" readonly class="w-full bg-white/5 p-4 rounded-xl border border-white/5 outline-none font-bold text-xs text-zinc-400 cursor-not-allowed uppercase">
+            </div>
+
+            <div class="text-left">
+                <label class="text-[8px] font-black text-blue-500 ml-4 uppercase tracking-widest">Neden Admin Olmalısın?</label>
+                <textarea id="apply-reason" placeholder="Kısaca kendini ve tecrübelerini anlat..." class="w-full bg-black/50 p-4 rounded-xl border border-zinc-800 outline-none text-xs text-white focus:border-blue-500 transition h-32 resize-none"></textarea>
+            </div>
+
+            <button type="button" onclick="submitApplication()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase text-sm hover:scale-105 transition active:scale-95 shadow-lg shadow-blue-900/20">BAŞVURUYU GÖNDER</button>
+            
+            <a href="index.html" class="block text-[8px] text-zinc-500 hover:text-white transition mt-4 font-bold uppercase tracking-widest">← VAZGEÇ VE GERİ DÖN</a>
+        </form>
+    </main>
+
+    <script>
+        // Giriş yapan kullanıcıyı al
+        const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
+
+        window.onload = () => {
+            if (!user) {
+                alert("ÖNCE GİRİŞ YAPMALISIN!");
+                window.location.href = 'index.html';
+                return;
+            }
+            // Kullanıcı adını otomatik yazdır (Değiştiremesin)
+            document.getElementById('apply-user').value = user.username;
+        };
+
+        function submitApplication() {
+            const reason = document.getElementById('apply-reason').value.trim();
+            
+            if (reason.length < 10) {
+                return alert("LÜTFEN BİRAZ DAHA DETAYLI YAZ!");
+            }
+
+            // Başvuruları localStorage'a kaydet (Kurucu buradan okuyacak)
+            let allApplications = JSON.parse(localStorage.getItem('mpl_basvurular_detaylı')) || [];
+            
+            // Daha önce başvurmuş mu kontrol et
+            if (allApplications.find(a => a.username.toUpperCase() === user.username.toUpperCase())) {
+                return alert("ZATEN BİR BAŞVURUN VAR, KURUCUNUN ONAYINI BEKLE!");
+            }
+
+            allApplications.push({
+                username: user.username,
+                reason: reason,
+                date: new Date().toLocaleDateString()
+            });
+
+            localStorage.setItem('mpl_basvurular_detaylı', JSON.stringify(allApplications));
+            
+            alert("BAŞVURUN BAŞARIYLA KURUCUYA İLETİLDİ!");
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
+
