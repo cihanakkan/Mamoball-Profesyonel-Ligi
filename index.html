@@ -13,17 +13,25 @@
         .glass:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(220, 38, 38, 0.4); transform: translateY(-2px); }
         .live-dot { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 1; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { opacity: 0.3; box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { opacity: 1; } }
+        
+        /* Giriş Butonu Özel Stili */
+        .login-btn { background: linear-gradient(45deg, #dc2626, #991b1b); border: none; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-6 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-900 via-black to-black">
 
+    <div class="w-full max-w-sm flex justify-end mb-8">
+        <div id="auth-area">
+            </div>
+    </div>
+
     <header class="text-center mb-10">
         <div class="relative inline-block">
             <img src="https://raw.githubusercontent.com/cihanakk/Mamoball-Profesyonel-Ligi/main/1000090222.webp" class="w-32 h-32 rounded-full border-4 border-red-600/20 shadow-[0_0_50px_rgba(220,38,38,0.2)] mb-6">
-            <div class="absolute -bottom-2 -right-2 bg-red-600 text-[8px] font-black px-3 py-1 rounded-full italic tracking-widest shadow-lg">V2.1</div>
+            <div class="absolute -bottom-2 -right-2 bg-red-600 text-[8px] font-black px-3 py-1 rounded-full italic tracking-widest shadow-lg uppercase">MPL LİG</div>
         </div>
         <h1 class="text-4xl title-font font-black italic tracking-tighter uppercase">MAMO<span class="text-red-600 text-5xl">BALL</span></h1>
-        <p class="text-[10px] font-bold text-zinc-500 tracking-[0.5em] uppercase mt-2">Profesyonel Lig Paneli</p>
+        <p class="text-[10px] font-bold text-zinc-500 tracking-[0.5em] uppercase mt-2 italic">Professional League Panel</p>
     </header>
 
     <main class="w-full max-w-sm space-y-4">
@@ -41,7 +49,7 @@
                 <span class="text-xl">📊</span>
                 <span class="title-font font-black italic uppercase text-sm tracking-widest">PUAN DURUMU</span>
             </div>
-            <span class="text-zinc-600">→</span>
+            <span class="text-zinc-500">→</span>
         </a>
 
         <a href="istatistik.html" class="glass p-5 rounded-[2rem] flex items-center justify-between border-yellow-600/10">
@@ -49,7 +57,7 @@
                 <span class="text-xl">🏆</span>
                 <span class="title-font font-black italic uppercase text-sm tracking-widest text-yellow-500">GOL KRALLIĞI</span>
             </div>
-            <span class="text-zinc-600">→</span>
+            <span class="text-zinc-500">→</span>
         </a>
 
         <a href="sohbet.html" class="glass p-5 rounded-[2rem] flex items-center justify-between">
@@ -57,7 +65,7 @@
                 <span class="text-xl">💬</span>
                 <span class="title-font font-black italic uppercase text-sm tracking-widest">GENEL SOHBET</span>
             </div>
-            <span class="text-zinc-600">→</span>
+            <span class="text-zinc-500">→</span>
         </a>
 
         <a href="ozelsohbet.html" class="glass p-5 rounded-[2rem] flex items-center justify-between border-blue-600/10">
@@ -65,7 +73,7 @@
                 <span class="text-xl">🔒</span>
                 <span class="title-font font-black italic uppercase text-sm tracking-widest text-blue-400">ÖZEL MESAJ</span>
             </div>
-            <span class="text-zinc-600">→</span>
+            <span class="text-zinc-500">→</span>
         </a>
 
         <a href="haberler.html" class="glass p-5 rounded-[2rem] flex items-center justify-between">
@@ -73,25 +81,44 @@
                 <span class="text-xl">📰</span>
                 <span class="title-font font-black italic uppercase text-sm tracking-widest">HABERLER</span>
             </div>
-            <span class="text-zinc-600">→</span>
+            <span class="text-zinc-500">→</span>
         </a>
 
     </main>
 
     <footer class="mt-12 text-center">
-        <p class="text-[9px] font-black text-zinc-700 uppercase tracking-[0.3em]">CİHOLDİNG SPONSORLUĞUNDA</p>
-        <div id="user-info" class="mt-4 text-[10px] font-bold text-red-600 uppercase italic"></div>
+        <p class="text-[8px] font-black text-zinc-800 uppercase tracking-[0.4em]">MAMOBALL PROFESYONEL LİGİ © 2024</p>
     </footer>
 
     <script>
-        // Giriş yapan kullanıcıyı göster
-        const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
-        if(user) {
-            document.getElementById('user-info').innerText = `Hoş geldin, ${user.username} (${user.rank})`;
-        } else {
-            // Eğer giriş yapmamışsa login sayfasına at (İsteğe bağlı)
-            // location.href = "login.html"; 
+        function checkUser() {
+            const authArea = document.getElementById('auth-area');
+            const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
+
+            if(user) {
+                // Kullanıcı giriş yapmışsa: İsim ve Çıkış yap butonu
+                authArea.innerHTML = `
+                    <div class="flex flex-col items-end gap-1">
+                        <span class="text-[10px] font-black text-red-500 uppercase italic">${user.username} (${user.rank})</span>
+                        <button onclick="logout()" class="text-[8px] text-zinc-600 font-bold uppercase tracking-widest hover:text-white transition">ÇIKIŞ YAP</button>
+                    </div>
+                `;
+            } else {
+                // Kullanıcı giriş yapmamışsa: Giriş Yap / Kaydol Butonu
+                authArea.innerHTML = `
+                    <a href="login.html" class="login-btn px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest text-white hover:scale-105 transition-all">
+                        GİRİŞ YAP / KAYDOL
+                    </a>
+                `;
+            }
         }
+
+        function logout() {
+            sessionStorage.removeItem('loggedInUser');
+            location.reload();
+        }
+
+        window.onload = checkUser;
     </script>
 </body>
 </html>
