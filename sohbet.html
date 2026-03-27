@@ -3,49 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sohbet</title>
+    <title>MPL - Canlı Sohbet</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #000; color: white; font-family: sans-serif; margin: 0; overflow: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(220, 38, 38, 0.3); }
+    </style>
 </head>
-<body class="bg-black text-white p-4">
-    <div class="flex justify-between mb-4">
-        <h1 class="font-bold text-red-600">SOHBET</h1>
-        <a href="index.html" class="text-xs bg-zinc-800 p-2 rounded">GERİ</a>
+<body class="h-screen flex flex-col">
+
+    <div class="glass p-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
+            <h1 class="font-black italic text-sm tracking-widest">MPL GLOBAL CHAT</h1>
+        </div>
+        <a href="index.html" class="text-[10px] bg-zinc-800 px-4 py-2 rounded-lg font-bold">GERİ DÖN</a>
     </div>
-    <div id="box" class="h-96 bg-zinc-900 rounded-xl p-4 overflow-y-auto mb-4 border border-white/5"></div>
-    <div class="flex gap-2">
-        <input id="in" type="text" class="flex-1 bg-zinc-800 p-3 rounded-lg outline-none">
-        <button onclick="send()" class="bg-red-600 px-4 rounded-lg">OK</button>
+
+    <div class="flex-1 w-full">
+        <iframe src="https://www3.cbox.ws/box/?boxid=3534565&boxtag=mplchat" 
+                width="100%" 
+                height="100%" 
+                allowtransparency="yes" 
+                allow="autoplay" 
+                frameborder="0" 
+                marginheight="0" 
+                marginwidth="0" 
+                scrolling="auto">
+        </iframe>
     </div>
 
     <script>
-        // index.html'deki localStorage verisiyle eşitledim
+        // Giriş kontrolü (Hala lazım ki yabancılar girmesin)
         const session = localStorage.getItem('mpl_user');
         if(!session) {
-            alert("SOHBET İÇİN GİRİŞ YAPMALISIN!");
+            alert("SOHBETE ERİŞMEK İÇİN GİRİŞ YAPMALISIN!");
             location.href = "index.html";
         }
-        const myName = JSON.parse(session).u;
-
-        function send() {
-            const input = document.getElementById('in');
-            if(!input.value.trim()) return;
-            const msgs = JSON.parse(localStorage.getItem('mpl_msgs')) || [];
-            msgs.push({ u: myName, t: input.value });
-            localStorage.setItem('mpl_msgs', JSON.stringify(msgs));
-            input.value = "";
-            render();
-        }
-
-        function render() {
-            const msgs = JSON.parse(localStorage.getItem('mpl_msgs')) || [];
-            document.getElementById('box').innerHTML = msgs.map(m => `
-                <div class="mb-2">
-                    <span class="text-red-600 text-[10px] font-bold">${m.u}:</span>
-                    <span class="text-sm">${m.t}</span>
-                </div>
-            `).join('');
-        }
-        window.onload = render;
     </script>
 </body>
 </html>
