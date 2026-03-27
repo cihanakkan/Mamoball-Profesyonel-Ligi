@@ -22,7 +22,7 @@
         <section id="admin-panel" class="hidden mt-8 glass p-6 rounded-[2rem] border border-red-600"><h2 class="text-center font-black mb-4 text-red-600 uppercase italic">YÖNETİM PANELİ</h2><div id="admin-inputs" class="space-y-2"></div><button onclick="verileriKaydet()" class="w-full bg-red-600 p-4 rounded-xl font-black uppercase mt-6 shadow-lg">VERİLERİ GÜNCELLE</button></section>
     </main>
     <script>
-        let takımlar = JSON.parse(localStorage.getItem('mpl_veriler')) || [{ ad: "BAYER LEVERKUSEN", o: 0, g: 0, p: 0 }, { ad: "INTER FC", o: 0, g: 0, p: 0 }, { ad: "ITALY", o: 0, g: 0, p: 0 }, { ad: "TOTTENHAM", o: 0, g: 0, p: 0 }, { ad: "SPORTING LIZBON", o: 0, g: 0, p: 0 }, { ad: "FLAMENGO", o: 0, g: 0, p: 0 }];
+        let takımlar = JSON.parse(localStorage.getItem('mpl_veriler')) || [{ ad: "BAYER LEVERKUSEN", o: 0, g: 0, p: 0 }, { ad: "INTER FC", o: 0, g: 0, p: 0 }, { ad: "ITALY", o: 0, g: 0, p: 0 }, { ad: "TOTTENHAM", o: 0, g: 0, p: 0 }, { ad: "HATAYSPOR", o: 0, g: 0, p: 0 }, { ad: "FLAMENGO", o: 0, g: 0, p: 0 }];
         function tabloyuCiz() {
             const tbody = document.getElementById('puan-tablosu'); const adminInputs = document.getElementById('admin-inputs');
             tbody.innerHTML = ''; adminInputs.innerHTML = ''; takımlar.sort((a, b) => b.p - a.p || b.g - a.g);
