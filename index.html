@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MPL - Giriş & Yönetim</title>
+    <title>MPL - Ana Sayfa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;900&display=swap');
@@ -20,86 +20,66 @@
             <input type="text" id="username" placeholder="KULLANICI ADI" class="w-full bg-black/50 p-4 rounded-xl border border-zinc-800 outline-none uppercase font-bold text-xs focus:border-red-600 transition text-white">
             <input type="password" id="password" placeholder="ŞİFRE" class="w-full bg-black/50 p-4 rounded-xl border border-zinc-800 outline-none uppercase font-bold text-xs focus:border-red-600 transition text-white">
             <button onclick="handleAuth()" class="w-full bg-red-600 p-4 rounded-xl font-black uppercase text-sm hover:scale-105 transition shadow-lg shadow-red-900/20">GİRİŞ YAP</button>
-            <p onclick="toggleAuth()" id="toggle-text" class="text-[9px] text-zinc-500 cursor-pointer hover:text-white mt-4 uppercase tracking-widest font-bold">YENİ KAYIT OLUŞTUR</p>
+            <p onclick="toggleAuth()" id="toggle-text" class="text-[9px] text-zinc-500 cursor-pointer hover:text-white mt-4 uppercase tracking-widest font-bold">KAYIT OL</p>
         </div>
     </main>
 
-    <main id="main-menu" class="hidden max-w-md w-full space-y-10 text-center">
+    <main id="main-menu" class="hidden max-w-md w-full space-y-8 text-center">
         <header>
-            <img src="https://raw.githubusercontent.com/cihanakk/Mamoball-Profesyonel-Ligi/main/1000090222.webp" class="w-40 h-40 mx-auto rounded-full mb-6 border-2 border-red-600 shadow-[0_0_50px_rgba(220,38,38,0.4)]">
+            <img src="https://raw.githubusercontent.com/cihanakk/Mamoball-Profesyonel-Ligi/main/1000090222.webp" class="w-32 h-32 mx-auto rounded-full mb-4 border-2 border-red-600 shadow-2xl">
             <h2 id="welcome-msg" class="text-2xl title-font font-black italic uppercase"></h2>
             <p id="rank-msg" class="text-red-600 text-[10px] font-black tracking-widest uppercase mb-4"></p>
-            <div class="flex justify-center gap-4">
-                <button onclick="changePass()" class="text-[8px] text-zinc-400 font-bold tracking-widest uppercase underline">ŞİFRE DEĞİŞTİR</button>
-                <button onclick="logout()" class="text-[8px] text-red-500 font-bold tracking-widest uppercase underline">ÇIKIŞ YAP</button>
+            
+            <div class="flex flex-wrap justify-center gap-3">
+                <button onclick="changePass()" class="text-[8px] bg-white/5 px-3 py-2 rounded-full font-bold uppercase hover:bg-white/10">ŞİFRE DEĞİŞTİR</button>
+                <a id="apply-link" href="adminbasvurusu.html" class="hidden text-[8px] bg-blue-600/20 text-blue-400 px-3 py-2 rounded-full font-bold uppercase">ADMİN BAŞVURUSU</a>
+                <button id="owner-panel-btn" onclick="toggleOwnerPanel()" class="hidden text-[8px] bg-red-600 text-white px-3 py-2 rounded-full font-bold uppercase shadow-lg">YETKİ PANELİ</button>
+                <button onclick="logout()" class="text-[8px] bg-zinc-900 text-zinc-500 px-3 py-2 rounded-full font-bold uppercase">ÇIKIŞ</button>
             </div>
         </header>
+
+        <div id="owner-panel" class="hidden glass p-6 rounded-[2rem] border border-red-600 space-y-4">
+            <h3 class="text-xs font-black uppercase italic text-red-500">KURUCU YETKİ PANELİ</h3>
+            <div class="space-y-2">
+                <input type="text" id="target-user" placeholder="HEDEF KULLANICI ADI" class="w-full bg-black/50 p-3 rounded-lg border border-zinc-800 outline-none text-[10px] uppercase font-bold text-white">
+                <button onclick="yetkiVer()" class="w-full bg-red-600 p-3 rounded-lg font-black uppercase text-[10px]">MANUEL ADMİN YAP</button>
+            </div>
+            <div class="border-t border-white/5 pt-4">
+                <p class="text-[8px] text-zinc-500 uppercase font-black mb-2">Gelen Başvurular:</p>
+                <div id="basvurular-list" class="space-y-2 max-h-40 overflow-y-auto pr-1 text-left"></div>
+            </div>
+        </div>
+
         <div class="grid grid-cols-1 gap-4 px-4">
-            <a href="puantablosu.html" class="glass py-10 rounded-[3rem] hover:bg-red-600/10 transition-all border border-white/5"><h2 class="text-2xl title-font font-black italic uppercase text-white">TABLO</h2></a>
-            <a href="mplhaber.html" class="glass py-10 rounded-[3rem] hover:bg-red-600/10 transition-all border border-white/5"><h2 class="text-2xl title-font font-black italic uppercase text-white">HABERLER</h2></a>
+            <a href="puantablosu.html" class="glass py-8 rounded-[2rem] hover:bg-red-600/10 transition-all border border-white/5"><h2 class="text-xl title-font font-black italic uppercase">TABLO</h2></a>
+            <a href="mplhaber.html" class="glass py-8 rounded-[2rem] hover:bg-red-600/10 transition-all border border-white/5"><h2 class="text-xl title-font font-black italic uppercase">HABERLER</h2></a>
         </div>
     </main>
 
     <script>
         let isLogin = true;
-        const staff = [
-            {username: "3LosTSouL4", password: "c2014add", rank: "KURUCU"},
-            {username: "TheKing", password: "Hga2009", rank: "KURUCU ORTAĞI"},
-            {username: "Musticardi", password: "Veneto2010", rank: "ADMİN"},
-            {username: "Rennex", password: "MPLADMİN2024", rank: "ADMİN"}
-        ];
+        const KURUCU_NAME = "3LOSTSOUL4"; 
 
         function toggleAuth() { isLogin = !isLogin; document.getElementById('auth-title').innerText = isLogin ? "GİRİŞ YAP" : "KAYIT OL"; }
 
         function handleAuth() {
-            const uInput = document.getElementById('username').value.trim();
-            const pInput = document.getElementById('password').value.trim();
-            if(!uInput || !pInput) return alert("BOŞ BIRAKMA!");
-
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value.trim();
+            if(!u || !p) return alert("BİLGİLERİ DOLDUR!");
             let users = JSON.parse(localStorage.getItem('mpl_users')) || [];
-            
+
             if(isLogin) {
-                // ÖNCE ADMIN KONTROLÜ
-                const admin = staff.find(s => s.username.toUpperCase() === uInput.toUpperCase());
-                if(admin) {
-                    const savedPass = localStorage.getItem('pass_' + admin.username.toLowerCase());
-                    const currentPass = savedPass || admin.password;
-                    
-                    if(pInput === currentPass) {
-                        sessionStorage.setItem('loggedInUser', JSON.stringify({...admin, password: currentPass}));
-                        return showMenu(admin);
-                    }
-                }
-
-                // SONRA NORMAL KULLANICI KONTROLÜ
-                const normal = users.find(x => x.username.toUpperCase() === uInput.toUpperCase() && x.password === pInput);
-                if(normal) {
-                    sessionStorage.setItem('loggedInUser', JSON.stringify(normal));
-                    return showMenu(normal);
-                }
-                
-                alert("HATALI GİRİŞ!");
+                let user = users.find(x => x.username.toUpperCase() === u.toUpperCase() && x.password === p);
+                if(user) {
+                    sessionStorage.setItem('loggedInUser', JSON.stringify(user));
+                    showMenu(user);
+                } else { alert("KULLANICI VEYA ŞİFRE HATALI!"); }
             } else {
-                // KAYIT OLMA
-                if(staff.find(s => s.username.toUpperCase() === uInput.toUpperCase()) || users.find(x => x.username.toUpperCase() === uInput.toUpperCase())) {
-                    return alert("BU İSİM KULLANILIYOR!");
-                }
-                users.push({username: uInput, password: pInput, rank: "OYUNCU"});
+                if(users.find(x => x.username.toUpperCase() === u.toUpperCase())) return alert("BU İSİM ZATEN VAR!");
+                let rank = (u.toUpperCase() === KURUCU_NAME) ? "KURUCU" : "OYUNCU";
+                users.push({username: u, password: p, rank: rank});
                 localStorage.setItem('mpl_users', JSON.stringify(users));
-                alert("KAYIT BAŞARILI!"); toggleAuth();
-            }
-        }
-
-        function changePass() {
-            const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
-            const newP = prompt("YENİ ŞİFRE:");
-            if(newP && newP.length > 3) {
-                localStorage.setItem('pass_' + user.username.toLowerCase(), newP);
-                // Normal kullanıcıysa listesini güncelle
-                let users = JSON.parse(localStorage.getItem('mpl_users')) || [];
-                let idx = users.findIndex(x => x.username.toLowerCase() === user.username.toLowerCase());
-                if(idx !== -1) { users[idx].password = newP; localStorage.setItem('mpl_users', JSON.stringify(users)); }
-                alert("ŞİFRE DEĞİŞTİ. TEKRAR GİRİŞ YAP!"); logout();
+                alert("KAYIT TAMAM! GİRİŞ YAPABİLİRSİN."); toggleAuth();
             }
         }
 
@@ -108,6 +88,60 @@
             document.getElementById('main-menu').classList.remove('hidden');
             document.getElementById('welcome-msg').innerText = "HOŞ GELDİN, " + user.username;
             document.getElementById('rank-msg').innerText = user.rank;
+
+            if(user.username.toUpperCase() === KURUCU_NAME) {
+                document.getElementById('owner-panel-btn').classList.remove('hidden');
+                basvurulariYukle();
+            } else if(user.rank === "OYUNCU") {
+                document.getElementById('apply-link').classList.remove('hidden');
+            }
+        }
+
+        function toggleOwnerPanel() { document.getElementById('owner-panel').classList.toggle('hidden'); }
+
+        function yetkiVer(name = null) {
+            const target = (name || document.getElementById('target-user').value).trim().toUpperCase();
+            if(!target) return;
+            let users = JSON.parse(localStorage.getItem('mpl_users')) || [];
+            let idx = users.findIndex(x => x.username.toUpperCase() === target);
+            if(idx !== -1) {
+                users[idx].rank = "ADMİN";
+                localStorage.setItem('mpl_users', JSON.stringify(users));
+                // Başvurulardan da sil
+                let basvurular = JSON.parse(localStorage.getItem('mpl_basvurular_detaylı')) || [];
+                basvurular = basvurular.filter(b => b.username.toUpperCase() !== target);
+                localStorage.setItem('mpl_basvurular_detaylı', JSON.stringify(basvurular));
+                alert(target + " ARTIK ADMİN!"); location.reload();
+            } else { alert("KULLANICI BULUNAMADI!"); }
+        }
+
+        function basvurulariYukle() {
+            let basvurular = JSON.parse(localStorage.getItem('mpl_basvurular_detaylı')) || [];
+            const list = document.getElementById('basvurular-list');
+            list.innerHTML = basvurular.length ? "" : "<p class='text-[8px] text-zinc-700'>BAŞVURU YOK.</p>";
+            basvurular.forEach(b => {
+                list.innerHTML += `<div class="bg-white/5 p-3 rounded-lg border border-white/5 space-y-1">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-blue-400 font-black">${b.username}</span>
+                        <button onclick="yetkiVer('${b.username}')" class="text-[9px] bg-green-600 px-2 py-1 rounded text-white uppercase">ONAYLA</button>
+                    </div>
+                    <p class="text-[9px] text-zinc-400 leading-tight italic">"${b.reason}"</p>
+                </div>`;
+            });
+        }
+
+        function changePass() {
+            const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
+            const newP = prompt("YENİ ŞİFRE:");
+            if(newP && newP.length > 3) {
+                let users = JSON.parse(localStorage.getItem('mpl_users')) || [];
+                let idx = users.findIndex(x => x.username.toLowerCase() === user.username.toLowerCase());
+                if(idx !== -1) {
+                    users[idx].password = newP;
+                    localStorage.setItem('mpl_users', JSON.stringify(users));
+                    alert("ŞİFRE DEĞİŞTİ!"); logout();
+                }
+            }
         }
 
         function logout() { sessionStorage.removeItem('loggedInUser'); location.reload(); }
@@ -115,4 +149,3 @@
     </script>
 </body>
 </html>
-
