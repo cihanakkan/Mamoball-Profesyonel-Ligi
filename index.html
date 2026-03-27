@@ -3,104 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MPL - Ana Panel</title>
+    <title>MPL PRO - LİG YÖNETİMİ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap');
-        body { background: #000; color: white; font-family: sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 2rem; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;700;900&display=swap');
+        body { background: #000; color: white; font-family: 'Inter', sans-serif; margin: 0; }
         .title-font { font-family: 'Orbitron', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.5rem; }
+        input { background: #111 !important; border: 1px solid #333 !important; color: white !important; padding: 12px; border-radius: 12px; font-size: 13px; outline: none; }
+        input:focus { border-color: #dc2626 !important; }
+        .gold-row { background: linear-gradient(90deg, rgba(251,191,36,0.1) 0%, rgba(0,0,0,0) 100%); color: #fbbf24; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-6 bg-black">
+<body class="pb-24">
 
-    <header id="header-area" class="text-center mb-8">
-        <h1 class="text-3xl title-font font-black italic text-white">MAMO<span class="text-red-600">BALL</span></h1>
-        <p id="sub-title" class="text-[10px] text-zinc-500 uppercase mt-2">Giriş Bekleniyor</p>
+    <header class="p-6 text-center border-b border-white/5 sticky top-0 bg-black z-50 flex justify-between items-center">
+        <h1 class="text-xl title-font font-black italic">MPL<span class="text-red-600 text-2xl">PRO</span></h1>
+        <button onclick="openAdmin()" class="text-[10px] bg-red-600/10 border border-red-600/20 px-4 py-2 rounded-full text-red-500 font-black uppercase tracking-widest">ADMİN PANELİ</button>
     </header>
 
-    <section id="login-section" class="w-full max-w-sm space-y-4">
-        <div class="glass p-8 space-y-4">
-            <input type="text" id="username" placeholder="KULLANICI ADI" class="w-full p-4 bg-zinc-900 border border-white/10 rounded-xl outline-none text-white uppercase">
-            <input type="password" id="password" placeholder="ŞİFRE" class="w-full p-4 bg-zinc-900 border border-white/10 rounded-xl outline-none text-white">
-            <button onclick="handleLogin()" class="w-full bg-red-600 p-4 rounded-xl font-bold uppercase">GİRİŞ YAP</button>
+    <main id="news-page" class="p-4 space-y-4">
+        <div class="glass p-5 relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-2 opacity-10 text-4xl">⚽</div>
+            <span class="text-[8px] bg-red-600 px-2 py-0.5 rounded font-bold mb-2 inline-block">SİSTEM</span>
+            <h3 class="text-lg font-black italic uppercase leading-tight">LİG SİSTEMİ ÇEVRİMİÇİ</h3>
+            <p class="text-zinc-500 text-xs mt-1 italic">Yönetici panelinden takımları güncelleyebilirsin.</p>
         </div>
-    </section>
-
-    <main id="menu-section" class="hidden w-full max-w-sm space-y-3">
-        <a href="canliskor.html" class="glass p-5 block text-center font-bold border-red-600/30">CANLI SKOR</a>
-        <a href="sohbet.html" class="glass p-5 block text-center font-bold">GENEL SOHBET</a>
-        <a href="ozelsohbet.html" class="glass p-5 block text-center font-bold">ÖZEL MESAJ</a>
-        <a href="mplhaber.html" class="glass p-5 block text-center font-bold">HABERLER</a>
-        <button onclick="logout()" class="w-full text-zinc-600 text-[10px] mt-4 uppercase">OTURUMU KAPAT</button>
+        
+        <div class="glass p-5">
+            <span class="text-[8px] bg-blue-600 px-2 py-0.5 rounded font-bold mb-2 inline-block uppercase">BİLGİ</span>
+            <h3 class="text-sm font-bold uppercase italic text-zinc-300">Puan Tablosu Otomatik Sıralanır</h3>
+            <p class="text-zinc-600 text-[10px] mt-1">En yüksek puanlı takım her zaman zirvede görünür.</p>
+        </div>
     </main>
 
+    <section id="table-page" class="hidden p-4">
+        <div class="glass overflow-hidden">
+            <table class="w-full text-left text-xs">
+                <thead class="bg-zinc-900/80 text-zinc-500">
+                    <tr>
+                        <th class="p-4">TAKIM</th>
+                        <th class="p-4 text-center">O</th>
+                        <th class="p-4 text-center">P</th>
+                        <th class="p-4"></th>
+                    </tr>
+                </thead>
+                <tbody id="league-body" class="font-bold italic">
+                    </tbody>
+            </table>
+        </div>
+        <div id="empty-msg" class="text-center text-zinc-800 text-[10px] mt-20 uppercase font-black tracking-widest hidden">Sistemde Kayıtlı Takım Yok</div>
+    </section>
+
+    <div id="admin-box" class="hidden fixed inset-0 bg-black/98 z-[100] p-8 flex flex-col justify-center">
+        <div id="login-form" class="space-y-4">
+            <h2 class="title-font text-red-600 text-xl text-center mb-6 uppercase">Admin Girişi</h2>
+            <input type="text" id="adm-user" placeholder="ADMİN ADI" class="w-full">
+            <input type="password" id="adm-pass" placeholder="ŞİFRE" class="w-full">
+            <button onclick="checkAdmin()" class="w-full bg-red-600 p-4 rounded-xl font-black uppercase text-xs shadow-lg shadow-red-600/20">SİSTEMİ AÇ</button>
+            <button onclick="closeAdmin()" class="w-full text-zinc-600 text-[10px] uppercase mt-4">KAPAT</button>
+        </div>
+
+        <div id="add-form" class="hidden space-y-4">
+            <h2 class="title-font text-green-500 text-xl text-center mb-6">TAKIM EKLE</h2>
+            <input type="text" id="team-name" placeholder="TAKIM ADI" class="w-full">
+            <div class="grid grid-cols-2 gap-2">
+                <input type="number" id="team-o" placeholder="OYNANAN" class="w-full">
+                <input type="number" id="team-p" placeholder="PUAN" class="w-full">
+            </div>
+            <button onclick="addTeam()" class="w-full bg-green-600 p-4 rounded-xl font-black uppercase text-xs">TABLOYA KAYDET</button>
+            <button onclick="closeAdmin()" class="w-full text-zinc-600 text-[10px] uppercase mt-4 font-bold">GERİ DÖN</button>
+        </div>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 right-0 p-4 flex justify-around bg-black/90 border-t border-red-600/30 backdrop-blur-md">
+        <button onclick="show('news')" class="flex flex-col items-center gap-1 group">
+            <span class="text-xl">📰</span>
+            <span class="text-[9px] font-black uppercase text-zinc-500 group-hover:text-red-500">HABERLER</span>
+        </button>
+        <button onclick="show('table')" class="flex flex-col items-center gap-1 group">
+            <span class="text-xl">📊</span>
+            <span class="text-[9px] font-black uppercase text-zinc-500 group-hover:text-red-500">TABLO</span>
+        </button>
+    </nav>
+
     <script>
-        const KEMIK_HESAPLAR = [
-            { u: "3LOSTSOUL4", p: "c2014add", r: "KURUCU" },
-            { u: "THEKING", p: "Hga2009", r: "YÖNETİCİ" },
-            { u: "MUSTICARDI", p: "Veneto2010", r: "OYUNCU" },
-            { u: "RENNIX", p: "MPLADMIN2024", r: "ADMİN" },
-            { u: "MAMO", p: "123456", r: "KURUCU" }
-        ];
+        let teams = JSON.parse(localStorage.getItem('mpl_teams')) || [];
 
-        function checkStatus() {
-            const user = localStorage.getItem('mpl_user');
-            if(user) {
-                document.getElementById('login-section').classList.add('hidden');
-                document.getElementById('menu-section').classList.remove('hidden');
-                document.getElementById('sub-title').innerText = "HOŞ GELDİN, " + JSON.parse(user).u;
-            }
+        function openAdmin() {
+            document.getElementById('admin-box').classList.remove('hidden');
         }
 
-        function handleLogin() {
-            const uIn = document.getElementById('username').value.trim().toUpperCase();
-            const pIn = document.getElementById('password').value.trim();
-            const found = KEMIK_HESAPLAR.find(x => x.u === uIn && x.p === pIn);
+        function closeAdmin() {
+            document.getElementById('admin-box').classList.add('hidden');
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('add-form').classList.add('hidden');
+        }
 
-            if(found) {
-                localStorage.setItem('mpl_user', JSON.stringify(found));
-                location.reload();
+        function checkAdmin() {
+            const u = document.getElementById('adm-user').value.trim();
+            const p = document.getElementById('adm-pass').value.trim();
+            
+            // YENİ BİLGİLERİN:
+            if(u === "3LosTSouL4" && p === "c2014add") {
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('add-form').classList.remove('hidden');
             } else {
-                alert("HATALI BİLGİ!");
+                alert("YETKİSİZ KULLANICI!");
             }
         }
 
-        function logout() {
-            localStorage.removeItem('mpl_user');
-            location.reload();
+        function addTeam() {
+            const n = document.getElementById('team-name').value.toUpperCase().trim();
+            const o = document.getElementById('team-o').value || 0;
+            const p = document.getElementById('team-p').value || 0;
+            
+            if(!n) return alert("TAKIM ADINI YAZMADIN!");
+            
+            teams.push({ n, o, p: parseInt(p) });
+            teams.sort((a,b) => b.p - a.p); // Puana göre sıralar
+            save();
+            renderTable();
+            closeAdmin();
+            document.getElementById('team-name').value = "";
+            document.getElementById('team-o').value = "";
+            document.getElementById('team-p').value = "";
         }
 
-        window.onload = checkStatus;
-    </script>
-</body>
-</html>
-            setCookie("mpl_session", "", -1); // Cookie sil
-            location.reload();
-        }
-
-        window.onload = checkStatus;
-    </script>
-</body>
-</html>
-                
-                // Yoksa yeni kayıtlılarda ara
-                if(!found) {
-                    found = users.find(x => x.u === uInput && x.p === pInput);
-                }
-
-                if(found) {
-                    sessionStorage.setItem('loggedInUser', JSON.stringify({username: found.u || found.username, rank: found.r}));
-                    location.reload();
-                } else {
-                    alert("HATALI BİLGİ!");
-                }
+        function deleteTeam(index) {
+            if(confirm("BU TAKIMI LİSTEDEN ÇIKARAYIM MI?")) {
+                teams.splice(index, 1);
+                save();
+                renderTable();
             }
         }
 
-        function logout() { sessionStorage.removeItem('loggedInUser'); location.reload(); }
-        window.onload = checkStatus;
+        function save() { localStorage.setItem('mpl_teams', JSON.stringify(teams)); }
+
+        function renderTable() {
+            const body = document.getElementById('league-body');
+            const msg = document.getElementById('empty-msg');
+            
+            if(teams.length === 0) { msg.classList.remove('hidden'); } 
+            else { msg.classList.add('hidden'); }
+
+            body.innerHTML = teams.map((t, i) => `
+                <tr class="${i === 0 ? 'gold-row' : ''}">
+                    <td class="p-4 font-black uppercase italic">${t.n}</td>
+                    <td class="p-4 text-center text-zinc-500">${t.o}</td>
+                    <td class="p-4 text-center font-black">${t.p}</td>
+                    <td class="p-4 text-right">
+                        <button onclick="deleteTeam(${i})" class="text-red-900 text-[10px] font-bold">✕</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function show(p) {
+            document.getElementById('news-page').className = p === 'news' ? 'p-4 space-y-4' : 'hidden';
+            document.getElementById('table-page').className = p === 'table' ? 'p-4' : 'hidden';
+        }
+
+        window.onload = renderTable;
     </script>
 </body>
+</html>
 </html>
 
