@@ -1,141 +1,97 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MPL - Yönetim Merkezi</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPL - Ana Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top, #1a0a0a 0%, #000 100%); color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #000; color: white; margin: 0; overflow-x: hidden; }
         .title-font { font-family: 'Orbitron', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .neon-border { border: 1px solid rgba(220, 38, 38, 0.5); box-shadow: 0 0 20px rgba(220, 38, 38, 0.2); }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
+        .glass:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(220, 38, 38, 0.4); transform: translateY(-2px); }
+        .live-dot { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { opacity: 0.3; box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { opacity: 1; } }
     </style>
 </head>
-<body class="p-6">
-    <main id="auth-box" class="max-w-md w-full glass p-10 rounded-[3rem] neon-border text-center">
-        <h1 class="text-6xl title-font font-black italic mb-2 tracking-tighter text-white">MPL<span class="text-red-600">.</span></h1>
-        <p id="auth-title" class="text-[10px] tracking-[0.5em] text-zinc-500 font-bold mb-8 uppercase">SİSTEME GİRİŞ YAP</p>
-        <div class="space-y-4">
-            <input type="text" id="username" placeholder="KULLANICI ADI" class="w-full bg-black/50 p-4 rounded-xl border border-zinc-800 outline-none uppercase font-bold text-xs focus:border-red-600 transition text-white">
-            <input type="password" id="password" placeholder="ŞİFRE" class="w-full bg-black/50 p-4 rounded-xl border border-zinc-800 outline-none uppercase font-bold text-xs focus:border-red-600 transition text-white">
-            <button onclick="handleAuth()" class="w-full bg-red-600 p-4 rounded-xl font-black uppercase text-sm hover:scale-105 transition shadow-lg shadow-red-900/20">GİRİŞ YAP</button>
-            <p onclick="toggleAuth()" id="toggle-text" class="text-[9px] text-zinc-500 cursor-pointer hover:text-white mt-4 uppercase tracking-widest font-bold">KAYIT OL</p>
-        </div>
-    </main>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-900 via-black to-black">
 
-    <main id="main-menu" class="hidden max-w-md w-full space-y-8 text-center">
-        <header>
-            <img src="https://raw.githubusercontent.com/cihanakk/Mamoball-Profesyonel-Ligi/main/1000090222.webp" class="w-32 h-32 mx-auto rounded-full mb-4 border-2 border-red-600 shadow-2xl">
-            <h2 id="welcome-msg" class="text-2xl title-font font-black italic uppercase"></h2>
-            <p id="rank-msg" class="text-red-600 text-[10px] font-black tracking-widest uppercase mb-4"></p>
-            <div class="flex flex-wrap justify-center gap-3">
-                <button id="apply-link" onclick="location.href='adminbasvurusu.html'" class="hidden text-[8px] bg-blue-600/20 text-blue-400 px-3 py-2 rounded-full font-bold uppercase">ADMİN BAŞVURUSU</button>
-                <button id="owner-panel-btn" onclick="toggleOwnerPanel()" class="hidden text-[8px] bg-red-600 text-white px-3 py-2 rounded-full font-bold uppercase shadow-lg">YETKİ PANELİ</button>
-                <button onclick="logout()" class="text-[8px] bg-zinc-900 text-zinc-500 px-3 py-2 rounded-full font-bold uppercase">ÇIKIŞ YAP</button>
+    <header class="text-center mb-10">
+        <div class="relative inline-block">
+            <img src="https://raw.githubusercontent.com/cihanakk/Mamoball-Profesyonel-Ligi/main/1000090222.webp" class="w-32 h-32 rounded-full border-4 border-red-600/20 shadow-[0_0_50px_rgba(220,38,38,0.2)] mb-6">
+            <div class="absolute -bottom-2 -right-2 bg-red-600 text-[8px] font-black px-3 py-1 rounded-full italic tracking-widest shadow-lg">V2.1</div>
+        </div>
+        <h1 class="text-4xl title-font font-black italic tracking-tighter uppercase">MAMO<span class="text-red-600 text-5xl">BALL</span></h1>
+        <p class="text-[10px] font-bold text-zinc-500 tracking-[0.5em] uppercase mt-2">Profesyonel Lig Paneli</p>
+    </header>
+
+    <main class="w-full max-w-sm space-y-4">
+
+        <a href="canliskor.html" class="glass p-5 rounded-[2rem] flex items-center justify-between border-red-600/30">
+            <div class="flex items-center gap-4">
+                <div class="live-dot"></div>
+                <span class="title-font font-black italic uppercase text-sm tracking-widest">CANLI SKOR</span>
             </div>
-        </header>
+            <span class="text-red-600 font-black">>></span>
+        </a>
 
-        <div id="owner-panel" class="hidden glass p-6 rounded-[2rem] border border-red-600 space-y-4">
-            <h3 class="text-xs font-black uppercase italic text-red-500">KURUCU PANELİ</h3>
-            <input type="text" id="target-user" placeholder="ADMİN YAPILACAK İSİM" class="w-full bg-black/50 p-3 rounded-lg border border-zinc-800 outline-none text-[10px] uppercase font-bold text-white">
-            <button onclick="yetkiVer()" class="w-full bg-red-600 p-3 rounded-lg font-black uppercase text-[10px]">YETKİ VER</button>
-            <div id="basvurular-list" class="text-left space-y-2 mt-4 border-t border-white/5 pt-4"></div>
-        </div>
+        <a href="puantablosu.html" class="glass p-5 rounded-[2rem] flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <span class="text-xl">📊</span>
+                <span class="title-font font-black italic uppercase text-sm tracking-widest">PUAN DURUMU</span>
+            </div>
+            <span class="text-zinc-600">→</span>
+        </a>
 
-        <div class="grid grid-cols-1 gap-4 px-4">
-            <a href="puantablosu.html" class="glass py-8 rounded-[2rem] hover:bg-red-600/10 transition-all border border-white/5 text-xl title-font font-black italic uppercase text-white">TABLO</a>
-            <a href="mplhaber.html" class="glass py-8 rounded-[2rem] hover:bg-red-600/10 transition-all border border-white/5 text-xl title-font font-black italic uppercase text-white">HABERLER</a>
-        </div>
+        <a href="istatistik.html" class="glass p-5 rounded-[2rem] flex items-center justify-between border-yellow-600/10">
+            <div class="flex items-center gap-4">
+                <span class="text-xl">🏆</span>
+                <span class="title-font font-black italic uppercase text-sm tracking-widest text-yellow-500">GOL KRALLIĞI</span>
+            </div>
+            <span class="text-zinc-600">→</span>
+        </a>
+
+        <a href="sohbet.html" class="glass p-5 rounded-[2rem] flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <span class="text-xl">💬</span>
+                <span class="title-font font-black italic uppercase text-sm tracking-widest">GENEL SOHBET</span>
+            </div>
+            <span class="text-zinc-600">→</span>
+        </a>
+
+        <a href="ozelsohbet.html" class="glass p-5 rounded-[2rem] flex items-center justify-between border-blue-600/10">
+            <div class="flex items-center gap-4">
+                <span class="text-xl">🔒</span>
+                <span class="title-font font-black italic uppercase text-sm tracking-widest text-blue-400">ÖZEL MESAJ</span>
+            </div>
+            <span class="text-zinc-600">→</span>
+        </a>
+
+        <a href="haberler.html" class="glass p-5 rounded-[2rem] flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <span class="text-xl">📰</span>
+                <span class="title-font font-black italic uppercase text-sm tracking-widest">HABERLER</span>
+            </div>
+            <span class="text-zinc-600">→</span>
+        </a>
+
     </main>
+
+    <footer class="mt-12 text-center">
+        <p class="text-[9px] font-black text-zinc-700 uppercase tracking-[0.3em]">CİHOLDİNG SPONSORLUĞUNDA</p>
+        <div id="user-info" class="mt-4 text-[10px] font-bold text-red-600 uppercase italic"></div>
+    </footer>
 
     <script>
-        let isLogin = true;
-        
-        // BU LİSTE ASLA DEĞİŞMEZ (Hardcoded)
-        const STAFF = [
-            {u: "3LOSTSOUL4", p: "c2014add", r: "KURUCU"},
-            {u: "RENNIX", p: "MPLADMİN2024", r: "ADMİN"},
-            {u: "THEKING", p: "Hga2009", r: "KURUCU ORTAĞI"},
-            {u: "MUSTICARDI", p: "Veneto2010", r: "ADMİN"}
-        ];
-
-        function toggleAuth() { isLogin = !isLogin; document.getElementById('auth-title').innerText = isLogin ? "GİRİŞ YAP" : "KAYIT OL"; }
-
-        function handleAuth() {
-            const u = document.getElementById('username').value.trim().toUpperCase();
-            const p = document.getElementById('password').value.trim();
-            if(!u || !p) return alert("BOŞ BIRAKMA!");
-
-            // 1. Yetkili Kontrolü
-            const staffMember = STAFF.find(s => s.u === u && s.p === p);
-            if(staffMember) {
-                const user = {username: staffMember.u, rank: staffMember.r};
-                sessionStorage.setItem('loggedInUser', JSON.stringify(user));
-                return showMenu(user);
-            }
-
-            // 2. Normal Kullanıcı Kontrolü
-            let users = JSON.parse(localStorage.getItem('mpl_users')) || [];
-            if(isLogin) {
-                const found = users.find(x => x.username.toUpperCase() === u && x.password === p);
-                if(found) {
-                    sessionStorage.setItem('loggedInUser', JSON.stringify(found));
-                    return showMenu(found);
-                }
-                alert("GİRİŞ HATALI!");
-            } else {
-                if(users.find(x => x.username.toUpperCase() === u)) return alert("BU İSİM VAR!");
-                users.push({username: u, password: p, rank: "OYUNCU"});
-                localStorage.setItem('mpl_users', JSON.stringify(users));
-                alert("KAYIT OK! GİRİŞ YAP."); toggleAuth();
-            }
+        // Giriş yapan kullanıcıyı göster
+        const user = JSON.parse(sessionStorage.getItem('loggedInUser'));
+        if(user) {
+            document.getElementById('user-info').innerText = `Hoş geldin, ${user.username} (${user.rank})`;
+        } else {
+            // Eğer giriş yapmamışsa login sayfasına at (İsteğe bağlı)
+            // location.href = "login.html"; 
         }
-
-        function showMenu(user) {
-            document.getElementById('auth-box').classList.add('hidden');
-            document.getElementById('main-menu').classList.remove('hidden');
-            document.getElementById('welcome-msg').innerText = user.username;
-            document.getElementById('rank-msg').innerText = user.rank;
-
-            if(user.username === "3LOSTSOUL4") {
-                document.getElementById('owner-panel-btn').classList.remove('hidden');
-                basvurulariYukle();
-            } else if(user.rank === "OYUNCU") {
-                document.getElementById('apply-link').classList.remove('hidden');
-            }
-        }
-
-        function yetkiVer(name = null) {
-            const target = (name || document.getElementById('target-user').value).trim().toUpperCase();
-            let users = JSON.parse(localStorage.getItem('mpl_users')) || [];
-            let idx = users.findIndex(x => x.username.toUpperCase() === target);
-            if(idx !== -1) {
-                users[idx].rank = "ADMİN";
-                localStorage.setItem('mpl_users', JSON.stringify(users));
-                // Başvurudan sil
-                let basv = JSON.parse(localStorage.getItem('mpl_basvurular_detaylı')) || [];
-                basv = basv.filter(b => b.username.toUpperCase() !== target);
-                localStorage.setItem('mpl_basvurular_detaylı', JSON.stringify(basv));
-                alert(target + " ARTIK ADMİN!"); location.reload();
-            } else alert("OYUNCU BULUNAMADI!");
-        }
-
-        function basvurulariYukle() {
-            let basv = JSON.parse(localStorage.getItem('mpl_basvurular_detaylı')) || [];
-            const list = document.getElementById('basvurular-list');
-            list.innerHTML = basv.length ? "" : "<p class='text-[8px] text-zinc-600'>BAŞVURU YOK.</p>";
-            basv.forEach(b => {
-                list.innerHTML += `<div class="bg-white/5 p-2 rounded text-[10px] flex justify-between items-center mb-1">
-                    <span>${b.username}</span>
-                    <button onclick="yetkiVer('${b.username}')" class="text-green-500 uppercase">ONAYLA</button>
-                </div>`;
-            });
-        }
-
-        function toggleOwnerPanel() { document.getElementById('owner-panel').classList.toggle('hidden'); }
-        function logout() { sessionStorage.removeItem('loggedInUser'); location.reload(); }
-        window.onload = () => { const user = JSON.parse(sessionStorage.getItem('loggedInUser')); if(user) showMenu(user); }
     </script>
 </body>
 </html>
